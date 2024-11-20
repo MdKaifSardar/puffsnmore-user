@@ -28,6 +28,7 @@
     "embla-carousel-react": "^8.3.0",
     "jotai": "^2.8.0",
     "lucide-react": "^0.445.0",
+    "mongoose": "^8.8.2",
     "next": "^15.0.3",
     "nodemailer": "^6.9.16",
     "pnpm": "^9.14.1",
