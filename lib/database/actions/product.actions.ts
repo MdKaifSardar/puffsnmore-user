@@ -244,3 +244,21 @@ export async function getRelatedProductsBySubCategoryIds(
     handleError(error);
   }
 }
+
+// get featured products
+export async function getAllFeaturedProducts() {
+  try {
+    await connectToDatabase();
+    const featuredProducts = await Product.find({ featured: true }).populate({
+      path: "category",
+      model: Category,
+    });
+    return {
+      featuredProducts: JSON.parse(JSON.stringify(featuredProducts)),
+      success: true,
+      message: "Successfully fetched all feautured products.",
+    };
+  } catch (error) {
+    handleError(error);
+  }
+}
