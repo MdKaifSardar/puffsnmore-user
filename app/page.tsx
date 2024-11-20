@@ -1,11 +1,11 @@
-import BannerCarousel from "@/components/home/BannerCarousel";
-import BlogImages from "@/components/home/BlogImages";
-import CategorySection from "@/components/home/CategorySection";
-import CrazyDeals from "@/components/home/CrazyDeals";
-import NeedOfWebsite from "@/components/home/NeedOfWebsite";
-import ProductCard from "@/components/home/ProductCard";
-import ReviewSection from "@/components/home/ReviewSection";
-import SpecialCombos from "@/components/home/SpecialCombos";
+import BannerCarousel from "@/components/shared/home/BannerCarousel";
+import BlogImages from "@/components/shared/home/BlogImages";
+import CategorySection from "@/components/shared/home/CategorySection";
+import CrazyDeals from "@/components/shared/home/CrazyDeals";
+import NeedOfWebsite from "@/components/shared/home/NeedOfWebsite";
+import ProductCard from "@/components/shared/home/ProductCard";
+import ReviewSection from "@/components/shared/home/ReviewSection";
+import SpecialCombos from "@/components/shared/home/SpecialCombos";
 import React from "react";
 
 const HomePage = () => {

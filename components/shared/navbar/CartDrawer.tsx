@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
+
 import { ShoppingBag } from "lucide-react";
 import {
   Sheet,
@@ -13,6 +13,8 @@ import {
 import { X, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { useAtom, useStore } from "jotai";
+
+import { Button } from "@/components/ui/button";
 import { cartMenuState } from "./store";
 const CartDrawer = () => {
   const [cartMenuOpen, setCartMenuOpen] = useAtom(cartMenuState, {

@@ -1,10 +1,9 @@
-/* eslint no-use-before-define: 0 */
-
 import React from "react";
-import { Dialog } from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { Dialog } from "@/components/ui/dialog";
 const SearchModal = ({ setOpen }: { setOpen: any }) => {
   const trendingSearches = [
     "Perfume",
