@@ -7,16 +7,20 @@ import ProductCard from "@/components/shared/home/ProductCard";
 import ReviewSection from "@/components/shared/home/ReviewSection";
 import SpecialCombos from "@/components/shared/home/SpecialCombos";
 import { fetchAllWebsiteBanners } from "@/lib/database/actions/banners.actions";
+import { getAllSpecialComboOffers } from "@/lib/database/actions/homescreenoffers.actions";
 
 const HomePage = async () => {
   const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
     console.log(err)
   );
-  console.log("desktop images", desktopImages);
+  const specialCombosHomeData: any = await getAllSpecialComboOffers().catch(
+    (err) => console.log(err)
+  );
+  console.log("specialCombosHomeData", specialCombosHomeData);
   return (
     <div>
       <BannerCarousel desktopImages={desktopImages} />
-      <SpecialCombos />
+      <SpecialCombos comboData={specialCombosHomeData} />
       <ProductCard heading="BEST SELLERS" />
       <CategorySection />
       <CrazyDeals />
