@@ -12,11 +12,15 @@ import {
   getAllSpecialComboOffers,
 } from "@/lib/database/actions/homescreenoffers.actions";
 import { getTopSellingProducts } from "@/lib/database/actions/product.actions";
+import { getAllSubCategoriesByName } from "@/lib/database/actions/subCategory.actions";
 
 const HomePage = async () => {
   const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
     console.log(err)
   );
+  const subcategoriesData: any = await getAllSubCategoriesByName(
+    "unisex"
+  ).catch((err) => console.log(err));
   const specialCombosHomeData: any = await getAllSpecialComboOffers().catch(
     (err) => console.log(err)
   );
@@ -57,7 +61,7 @@ const HomePage = async () => {
         heading="BEST SELLERS"
         products={transformedBestSellerProducts}
       />
-      <CategorySection />
+      <CategorySection subCategories={subcategoriesData.subCategories} />
       <CrazyDeals dealsData={crazyDealsData} />
       <NeedOfWebsite />
       <ReviewSection />
