@@ -6,12 +6,16 @@ import NeedOfWebsite from "@/components/shared/home/NeedOfWebsite";
 import ProductCard from "@/components/shared/home/ProductCard";
 import ReviewSection from "@/components/shared/home/ReviewSection";
 import SpecialCombos from "@/components/shared/home/SpecialCombos";
-import React from "react";
+import { fetchAllWebsiteBanners } from "@/lib/database/actions/banners.actions";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
+    console.log(err)
+  );
+  console.log("desktop images", desktopImages);
   return (
     <div>
-      <BannerCarousel />
+      <BannerCarousel desktopImages={desktopImages} />
       <SpecialCombos />
       <ProductCard heading="BEST SELLERS" />
       <CategorySection />

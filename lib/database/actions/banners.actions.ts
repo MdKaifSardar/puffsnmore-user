@@ -14,7 +14,7 @@ export const fetchAllWebsiteBanners = async () => {
       type: "upload",
       max_results: 100,
     });
-    return result.resources;
+    return result.resources.map((item, index) => item.url);
   } catch (error) {
     handleError(error);
   }
