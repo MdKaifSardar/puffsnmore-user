@@ -14,10 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 const AccountDropDown = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { isSignedIn: isLoggedIn } = useUser();
+
   const [accountMenuOpen, setAccountMenuOpen] = useAtom(accountMenuState, {
     store: useStore(),
   });

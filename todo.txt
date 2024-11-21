@@ -1,1 +1,2 @@
-1. enable featured product feauture to admin dashboard
+1. enable featured product feauture to admin dashboard.
+2. product update function - update slug too. 
