@@ -58,9 +58,14 @@ export async function getNewArrivalProducts() {
       return {
         message: "Products are not yet created!",
         success: false,
+        products: [],
       };
     }
-    return JSON.parse(JSON.stringify(products));
+    return {
+      message: "Fetched all new arrival products",
+      success: true,
+      products: JSON.parse(JSON.stringify(products)),
+    };
   } catch (error) {
     handleError(error);
   }
