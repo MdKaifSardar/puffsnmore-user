@@ -1,7 +1,7 @@
 "use client";
 
-import ProductCard from "@/components/home/ProductCard";
-import FilterButton from "@/components/shop/FilterButton";
+import ProductCard from "@/components/shared/home/ProductCard";
+import FilterButton from "@/components/shared/shop/FilterButton";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -30,8 +30,8 @@ const ShopPage = () => {
           </div>
         </div>
       </div>
-      <ProductCard heading="" shop={true} />
-      <ProductCard heading="" shop={true} />
+      {/* <ProductCard heading="" shop={true} />
+      <ProductCard heading="" shop={true} /> */}
     </div>
   );
 };

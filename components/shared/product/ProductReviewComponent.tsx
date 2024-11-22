@@ -2,7 +2,7 @@
 
 import { ChevronDown, Star } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../ui/button";
+
 import {
   Dialog,
   DialogContent,
@@ -19,8 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "../ui/textarea";
 import { useForm } from "@mantine/form";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const ProductReviewComponent = () => {
   const [sortBy, setSortBy] = useState("Most Recent");
