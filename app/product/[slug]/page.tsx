@@ -17,6 +17,7 @@ import { Metadata } from "next";
 import QtyButtons from "@/components/shared/product/QtyButtons";
 import Link from "next/link";
 import AddtoCartButton from "@/components/shared/product/AddtoCart";
+import ProductCard from "@/components/shared/home/ProductCard";
 
 // generate meta data coming from database
 export async function generateMetadata({
@@ -30,6 +31,7 @@ export async function generateMetadata({
   const style = Number((await searchParams).style);
   const size = Number((await searchParams).size) || 0;
   const product = await getSingleProduct(slug, style, size);
+
   return {
     title: `Buy ${product.name} | VibeCart`,
     description: product.description,
@@ -48,6 +50,31 @@ const ProductPage = async ({
   const sizeforButton = Number((await searchParams).size);
   const product = await getSingleProduct(slug, style, size);
   const images = product.subProducts[0].images.map((image: any) => image.url);
+  const subCategoryProducts = product.subCategories.map((i: any) => i._id);
+  const relatedProducts = await getRelatedProductsBySubCategoryIds(
+    subCategoryProducts
+  ).catch((err) => console.log(err));
+  const transformedProducts = relatedProducts?.products.map((product: any) => ({
+    id: product._id,
+    name: product.name,
+    category: product.category, // You might need to format this
+    image: product.subProducts[0]?.images[0].url || "", // Adjust to match your image structure
+    rating: product.rating,
+    reviews: product.numReviews,
+    price: product.subProducts[0]?.price || 0, // Adjust to match your pricing structure
+    originalPrice: product.subProducts[0]?.originalPrice || 0, // Add logic for original price
+    discount: product.subProducts[0]?.discount || 0,
+    isBestseller: product.featured,
+    isSale: product.subProducts[0]?.isSale || false, // Adjust if you have sale logic
+    slug: product.slug,
+    prices: product.subProducts[0]?.sizes
+      .map((s: any) => {
+        return s.price;
+      })
+      .sort((a: any, b: any) => {
+        return a - b;
+      }),
+  }));
 
   return (
     <div>
@@ -194,7 +221,10 @@ const ProductPage = async ({
           numofReviews={product.numReviews}
           ratings={product.ratings}
         />
-        {/* <ProductCard heading="YOU MAY ALSO LIKE" /> */}
+        <ProductCard
+          heading="YOU MAY ALSO LIKE"
+          products={transformedProducts}
+        />
       </div>
     </div>
   );

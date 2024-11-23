@@ -219,7 +219,7 @@ const ProductReviewComponent = ({
             <div className="flex justify-center">No Reviews yet.</div>
           ) : (
             reviews.slice(0, 3).map((i: any, index: number) => {
-              console.log(i.reviewBy);
+              console.log(i);
               return (
                 <div className="border-t pt-4" key={index}>
                   <div className="flex items-center mb-2">
