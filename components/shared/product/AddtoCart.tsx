@@ -12,7 +12,8 @@ import { quantityState } from "../jotai/store";
 import { handleError } from "@/lib/utils";
 
 const AddtoCartButton = ({ product, size }: { product: any; size: number }) => {
-  const frontendSize = Number(useSearchParams().get("size"));
+  const frontendSize = useSearchParams().get("size");
+  console.log(frontendSize);
   useEffect(() => {
     useCartStore.persist.rehydrate();
   }, []);
@@ -22,8 +23,10 @@ const AddtoCartButton = ({ product, size }: { product: any; size: number }) => {
     store: useStore(),
   });
   const addtoCartHandler = async () => {
-    if (frontendSize == null) {
-      toast.error("Please select the size!");
+    if (frontendSize === null) {
+      toast.error("Please select the size!", {
+        style: { backgroundColor: "#FBE0E2" },
+      });
       return;
     }
     try {

@@ -264,7 +264,7 @@ export async function createProductReview(
 export async function getProductDetailsById(
   productId: string,
   style: number,
-  size: number
+  size: number | string
 ) {
   try {
     await connectToDatabase();
