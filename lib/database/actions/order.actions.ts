@@ -7,7 +7,8 @@ import nodemailer from "nodemailer";
 import { render } from "@react-email/components";
 import EmailTemplate from "@/lib/emails/index";
 import { handleError } from "@/lib/utils";
-
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 // create an order
 export async function createOrder(
   products: any[],
@@ -71,13 +72,13 @@ export async function createOrder(
 }
 
 // get order details by its ID
-export async function getOrderDetailsById(orderId: any) {
+export async function getOrderDetailsById(orderId: string) {
   try {
     await connectToDatabase();
     const orderData = await Order.findById(orderId)
       .populate({ path: "user", model: User })
       .lean();
-    if (orderData) {
+    if (!orderData) {
       return {
         message: "Order not found with this ID!",
         success: false,
