@@ -111,7 +111,7 @@ export async function getSingleProduct(
         model: Category,
       })
       .populate({ path: "subCategories", model: SubCategory })
-      .populate({ path: "review.reviewBy", model: User })
+      .populate({ path: "reviews.reviewBy", model: User })
       .lean();
     let subProduct = product?.subProducts[style];
     let prices = subProduct.sizes
@@ -121,6 +121,34 @@ export async function getSingleProduct(
       .sort((a: any, b: any) => {
         return a - b;
       });
+    // Count the number of reviews for each star rating
+    const ratingCount: any = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+    };
+    product.reviews.forEach((review: any) => {
+      const rating = review.rating;
+      if (ratingCount[rating] !== undefined) {
+        ratingCount[rating]++;
+      }
+    });
+    // Calculate the total number of reviews
+    const totalReviews = product.reviews.length;
+
+    // calculate rating breakdown percentages
+    const ratingBreakdown = [1, 2, 3, 4, 5].map((stars) => {
+      const count = ratingCount[stars];
+      const percentage: any =
+        totalReviews > 0 ? ((count / totalReviews) * 100).toFixed(2) : 0;
+      return {
+        stars,
+        percentage: parseFloat(percentage),
+        count,
+      };
+    });
     let newProduct = {
       ...product,
       style,
@@ -143,6 +171,8 @@ export async function getSingleProduct(
           : subProduct.sizes[size].price,
       priceBefore: subProduct.sizes[size].price,
       quantity: subProduct.sizes[size].qty,
+      ratingBreakdown,
+      rating: product.rating,
       allSizes: product.subProducts
         .map((p: any) => {
           return p.sizes;
@@ -224,6 +254,54 @@ export async function createProductReview(
         );
       }
     }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//get product details by its ID:
+
+export async function getProductDetailsById(
+  productId: string,
+  style: number,
+  size: number
+) {
+  try {
+    await connectToDatabase();
+    const product: any = await Product.findById(productId).lean();
+
+    let discount = product.subProducts[style].discount;
+    let priceBefore = product.subProducts[style].sizes[size].price;
+
+    // Correct discount calculation
+    let price = discount
+      ? priceBefore - (priceBefore * discount) / 100
+      : priceBefore;
+
+    let data = {
+      _id: product._id.toString(),
+      style: Number(style),
+      name: product.name,
+      description: product.description,
+      slug: product.slug,
+      sku: product.subProducts[style].sku,
+      brand: product.brand,
+      category: product.category,
+      subCategories: product.subCategories,
+      shipping: product.shipping,
+      images: product.subProducts[style].images,
+      color: product.subProducts[style].color,
+      size: product.subProducts[style].sizes[size].size,
+      price: price.toFixed(2), // Ensures the price is formatted with two decimals
+      priceBefore: priceBefore.toFixed(2), // Ensures formatting
+      vendor: product.vendor,
+      vendorId: product.vendorId,
+      discount,
+      saved: Math.round(priceBefore - price),
+      quantity: product.subProducts[style].sizes[size].qty,
+    };
+
+    return JSON.parse(JSON.stringify(data));
   } catch (error) {
     console.log(error);
   }

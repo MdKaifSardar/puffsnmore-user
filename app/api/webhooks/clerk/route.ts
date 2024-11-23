@@ -65,7 +65,7 @@ export async function POST(req: Request) {
       clerkId: id,
       email: email_addresses[0].email_address,
       image: image_url,
-      username,
+      username: username,
     };
 
     const newUser = await createUser(user);
