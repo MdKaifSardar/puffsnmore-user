@@ -21,7 +21,7 @@ interface Product {
 const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
   return (
     <div
-      className="w-full flex-shrink-0 mb-2 group container justify-center"
+      className="w-full flex-shrink-0 mb-2 group  justify-center "
       key={product.slug}
     >
       <div className="relative overflow-hidden">
@@ -58,9 +58,9 @@ const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
         </div>
       )}
 
-      <h3 className="font-semibold text-sm mb-2 textGap">
-        {product.name.length > 25
-          ? product.name.substring(0, 25) + "..."
+      <h3 className="font-semibold text-[13px] sm:text-sm mb-2 sm:textGap">
+        {product.name.length > 20
+          ? product.name.substring(0, 20) + "..."
           : product.name}
       </h3>
       <div className="flex items-center mb-2">
@@ -71,7 +71,7 @@ const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
         </span>
       </div>
       <div className="flex items-center gap-2 mb-4">
-        <span className="font-semibold">
+        <span className="font-semibold text-[13px] sm:text-sm">
           {product.prices.length === 1
             ? `₹${
                 product.prices[0] - (product.prices[0] * product.discount) / 100
@@ -108,8 +108,8 @@ const ProductCard = ({
   shop?: boolean;
   products: any[];
 }) => {
-  return (
-    <div className="container mx-auto mb-[20px]">
+  return products.length > 0 ? (
+    <div className="ownContainer mx-auto mb-[20px]">
       <div className="flex justify-center">
         <div className="heading ownContainer uppercase sm:my-[40px]">
           {heading}
@@ -138,6 +138,13 @@ const ProductCard = ({
           </Button>
         </div>
       )}
+    </div>
+  ) : (
+    <div className="flex flex-col justify-center items-center h-screen">
+      <h1 className="mb-4">No Products Found</h1>
+      <Link href={"/shop"}>
+        <Button className="p-2">Go to Shop Page</Button>
+      </Link>
     </div>
   );
 };

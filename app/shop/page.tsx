@@ -1,37 +1,84 @@
 "use client";
 
-import ProductCard from "@/components/shared/home/ProductCard";
-import FilterButton from "@/components/shared/shop/FilterButton";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { getAllCategories } from "@/lib/database/actions/categories.actions";
+import { getAllSubCategoriesByParentId } from "@/lib/database/actions/subCategory.actions";
+import { handleError } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const ShopPage = () => {
-  const [sortBy, setSortBy] = useState("Featured");
+  const [allCategories, setAllCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        await getAllCategories().then((res) => {
+          if (res?.success) {
+            setAllCategories(res?.categories || []);
+            setSelectedCategoryId(res?.categories[0]?._id || "");
+          }
+        });
+      } catch (error) {
+        handleError(error);
+      }
+    };
+    fetchCategories();
+  }, []);
+  useEffect(() => {
+    async function fetchSubCategories() {
+      if (selectedCategoryId === "") return;
+      await getAllSubCategoriesByParentId(selectedCategoryId)
+        .then((res) => {
+          setSubCategories(res?.subCategories);
+          console.log(subCategories);
+        })
+        .catch((err) => {
+          toast.error(err);
+          console.log(err);
+        });
+    }
+    fetchSubCategories();
+  }, [selectedCategoryId]);
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="conatiner my-[50px]">
       <h1 className="heading mb-8 text-center">Shop All Products</h1>
-      <div className="flex justify-center items-center mb-6">
-        <div className="flex">
-          <FilterButton />
-          <div className="relative">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="appearance-none bg-black text-white px-4 py-2 pr-8 border-l border-white"
-            >
-              <option>Featured</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Customer Rating</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-              <ChevronDown className="h-4 w-4" />
+      <RadioGroup
+        value={selectedCategoryId}
+        onValueChange={setSelectedCategoryId}
+      >
+        <div className="flex flex-row justify-center items-center gap-[10px]">
+          {allCategories.map((category: any, index: number) => (
+            <div key={category._id} className="flex items-center space-x-2">
+              <RadioGroupItem value={category._id} id={category._id} />
+              <Label htmlFor={category._id}>{category.name}</Label>
             </div>
-          </div>
+          ))}
         </div>
-      </div>
-      {/* <ProductCard heading="" shop={true} />
-      <ProductCard heading="" shop={true} /> */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {subCategories.map((item: any, index: number) => (
+            <div className="p-4 border rounded" key={index}>
+              <Link href={`/shop/subCategory/${item._id}?name=${item.name}`}>
+                <Image
+                  src={item.images[0].url}
+                  alt={item.name}
+                  width={450}
+                  height={320}
+                />
+              </Link>
+              <div className="">{item.name}</div>
+              <Link href={`/shop/subCategory/${item._id}?name=${item.name}`}>
+                <Button>See All Products</Button>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </RadioGroup>
     </div>
   );
 };
