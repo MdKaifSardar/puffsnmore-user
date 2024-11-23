@@ -55,47 +55,48 @@ const Navbar = () => {
   return (
     <nav className="w-full bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-15">
+        <div className="flex items-center justify-between h-15 ">
           <div className="flex items-center lg:w-1/3">
             {/* mobile hamburger menu */}
             <MobileHamBurgerMenu navItems={navItems} />
 
-            {/* For larger screens */}
+            {/* TODO: for lg screen */}
             <NavbarInput responsive={false} />
           </div>
 
           <div className="flex-1 flex items-center justify-center lg:w-1/3">
             <Link href={"/"}>
+              {" "}
               <h1 className="text-2xl font-bold">VIBECART</h1>
             </Link>
           </div>
 
           <div className="flex items-center justify-end lg:w-1/3">
-            <div>
+            <div className="">
+              {" "}
               <AccountDropDown />
             </div>
             <CartDrawer />
           </div>
-          {/*  for sm screen */}
-
-          <NavbarInput responsive={true} />
         </div>
+        {/* TODO: for sm screen */}
+        <NavbarInput responsive={true} />
+      </div>
 
-        {/* For smaller screens */}
-        <div className="hidden lg:block border-t border-gray-200 mt-4">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-evenly py-3">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={"#"}
-                  className="text-sm font-medium text-gray-700 hover:text-black group transition duration-300"
-                >
-                  {item.name}
-                  <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black "></span>
-                </Link>
-              ))}
-            </div>
+      <div className="hidden lg:block border-t border-gray-200 mt-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-evenly py-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href="#"
+                className="text-sm font-medium text-gray-700 hover:text-gray-900 group transition duration-300"
+              >
+                {item.name}
+
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black"></span>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

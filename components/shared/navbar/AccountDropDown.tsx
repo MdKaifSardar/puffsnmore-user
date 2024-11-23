@@ -14,10 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 const AccountDropDown = () => {
   const { isSignedIn: isLoggedIn } = useUser();
+  const { signOut } = useClerk();
 
   const [accountMenuOpen, setAccountMenuOpen] = useAtom(accountMenuState, {
     store: useStore(),
@@ -80,7 +81,7 @@ const AccountDropDown = () => {
           </p>
         ) : (
           <DropdownMenuItem
-          // onClick={() => signOut({ redirectUrl: "/sign-in" })}
+            onClick={() => signOut({ redirectUrl: "/sign-in" })}
           >
             <LogOut />
             <span>Log out</span>

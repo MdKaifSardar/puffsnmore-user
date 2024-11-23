@@ -76,7 +76,7 @@ const AddtoCartButton = ({ product, size }: { product: any; size: number }) => {
           toast(
             <div className="flex justify-between items-center gap-[20px] ">
               <Image src={data.images[0].url} alt="_" height={40} width={40} />
-              <div className="flex items-center justify-between text-xl text-white">
+              <div className="flex gap-[10px] items-center justify-between text-xl text-white">
                 <span>Product added to cart</span>{" "}
                 <span>
                   <FaCheckCircle size={20} />

@@ -9,17 +9,17 @@ const NavbarInput = ({ responsive }: { responsive: boolean }) => {
     <div className="lg:hidden">
       <div className="relative">
         <Search
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 "
           size={20}
         />
         <input
           type="search"
           placeholder="Search for your favourite products"
+          className="pl-10 pr-4 py-1 w-full border-b-2 border-black mb-2"
           onClick={() => setOpen(true)}
-          className="pl-10 pr-4 py-2 w-full border-b-2 border-black"
         />
-        {open && <SearchModal setOpen={setOpen} />}
       </div>
+      {open && <SearchModal setOpen={setOpen} />}
     </div>
   ) : (
     <div className="hidden lg:block w-full max-w-xs">
