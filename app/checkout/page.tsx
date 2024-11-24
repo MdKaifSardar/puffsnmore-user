@@ -1,3 +1,4 @@
+// ISR(CACHE) - 30 MINUTES
 import CheckoutPageComponent from "@/components/shared/checkout";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
@@ -7,6 +8,9 @@ export const metadata: Metadata = {
   title: "Secure Checkout | VibeCart",
   description: "Continue with Secure Checkout - Shop with Confidence.",
 };
+
+export const revalidate = 3600 / 2;
+
 const CheckoutPage = () => {
   return (
     <div>

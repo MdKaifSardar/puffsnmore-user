@@ -1,6 +1,7 @@
+// ISR(CACHE) - 30 MINUTES
+
 import React from "react";
 import { Star, Minus, Plus, Clock, Award, Droplet, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -19,6 +20,8 @@ import Link from "next/link";
 import AddtoCartButton from "@/components/shared/product/AddtoCart";
 import ProductCard from "@/components/shared/home/ProductCard";
 import { redirect } from "next/navigation";
+
+export const revalidate = 1800;
 
 // generate meta data coming from database
 export async function generateMetadata({

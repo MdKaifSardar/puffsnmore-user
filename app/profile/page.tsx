@@ -1,3 +1,5 @@
+// ISR(CACHE) - DISABLED
+
 import MyProfileComponent from "@/components/shared/profile";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
@@ -7,6 +9,8 @@ export const metadata: Metadata = {
   title: "Profile Page | VibeCart",
   description: "View Profile Page.",
 };
+export const revalidate = 0;
+
 const ProfilePage = () => {
   return (
     <div>

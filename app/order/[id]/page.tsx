@@ -1,3 +1,5 @@
+// ISR(CACHE) - 10 MINUTES
+
 import OrderedProductDetailedView from "@/components/shared/order/OrderProductDeatiledView";
 import { Button } from "@/components/ui/button";
 import { getOrderDetailsById } from "@/lib/database/actions/order.actions";
@@ -11,6 +13,8 @@ export const metadata: Metadata = {
   title: "Order Page | VibeCart",
   description: "View All of your Order Details.",
 };
+export const revalidate = 600;
+
 const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   // checking if the ID is valid Object ID
   const id = (await params).id;

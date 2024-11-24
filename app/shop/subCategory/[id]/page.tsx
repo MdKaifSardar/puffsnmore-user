@@ -1,3 +1,5 @@
+// ISR(CACHE) - 30 MINUTES
+
 import ProductCard from "@/components/shared/home/ProductCard";
 import { getRelatedProductsBySubCategoryIds } from "@/lib/database/actions/product.actions";
 import React from "react";
@@ -15,6 +17,8 @@ export async function generateMetadata({
     description: `Shop all ${subCategoryName} products.`,
   };
 }
+export const revalidate = 1800;
+
 const SubCategoryProductsPage = async ({
   params,
   searchParams,

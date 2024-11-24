@@ -1,3 +1,4 @@
+// ISR(CACHE) - 1 HOUR
 import BannerCarousel from "@/components/shared/home/BannerCarousel";
 import BlogImages from "@/components/shared/home/BlogImages";
 import CategorySection from "@/components/shared/home/CategorySection";
@@ -18,6 +19,8 @@ import {
   getTopSellingProducts,
 } from "@/lib/database/actions/product.actions";
 import { getAllSubCategoriesByName } from "@/lib/database/actions/subCategory.actions";
+
+export const revalidate = 3600;
 
 const HomePage = async () => {
   const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
