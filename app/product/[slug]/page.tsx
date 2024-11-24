@@ -231,6 +231,7 @@ const ProductPage = async ({
         <ProductCard
           heading="YOU MAY ALSO LIKE"
           products={transformedProducts}
+          shop
         />
       </div>
     </div>

@@ -2,6 +2,7 @@ import BannerCarousel from "@/components/shared/home/BannerCarousel";
 import BlogImages from "@/components/shared/home/BlogImages";
 import CategorySection from "@/components/shared/home/CategorySection";
 import CrazyDeals from "@/components/shared/home/CrazyDeals";
+import FeaturedProducts from "@/components/shared/home/FeaturedProducts";
 import NeedOfWebsite from "@/components/shared/home/NeedOfWebsite";
 import ProductCard from "@/components/shared/home/ProductCard";
 import ReviewSection from "@/components/shared/home/ReviewSection";
@@ -12,6 +13,7 @@ import {
   getAllSpecialComboOffers,
 } from "@/lib/database/actions/homescreenoffers.actions";
 import {
+  getAllFeaturedProducts,
   getNewArrivalProducts,
   getTopSellingProducts,
 } from "@/lib/database/actions/product.actions";
@@ -84,6 +86,9 @@ const HomePage = async () => {
         }),
     })
   );
+  const featuredProducts: any = await getAllFeaturedProducts().catch((err) =>
+    console.log(err)
+  );
   return (
     <div>
       <BannerCarousel desktopImages={desktopImages} />
@@ -93,6 +98,7 @@ const HomePage = async () => {
         products={transformedBestSellerProducts}
       />
       <CategorySection subCategories={subcategoriesData.subCategories} />
+      <FeaturedProducts products={featuredProducts.featuredProducts} />
       <CrazyDeals dealsData={crazyDealsData} />
       <NeedOfWebsite />
       <ProductCard

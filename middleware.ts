@@ -40,7 +40,7 @@ const aj = arcjet({
     fixedWindow({
       mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
       window: "60s", // 60 second fixed window
-      max: 100, // allow a maximum of 100 requests
+      max: 500, // allow a maximum of 100 requests
     }),
     detectBot({
       mode: "LIVE", // will block requests. Use "DRY_RUN" to log only

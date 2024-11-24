@@ -31,6 +31,7 @@ export async function getTopSellingProducts() {
     await connectToDatabase();
     const products = await Product.find()
       .sort({ "subProduct.sold": -1 })
+      .limit(4)
       .lean();
     if (!products) {
       return {
@@ -53,7 +54,10 @@ export async function getTopSellingProducts() {
 export async function getNewArrivalProducts() {
   try {
     await connectToDatabase();
-    const products = await Product.find().sort({ createdAt: -1 }).lean();
+    const products = await Product.find()
+      .sort({ createdAt: -1 })
+      .limit(4)
+      .lean();
     if (!products) {
       return {
         message: "Products are not yet created!",
@@ -324,7 +328,7 @@ export async function getRelatedProductsBySubCategoryIds(
           subCategories: { $in: subCategoryIds },
         }
       : {};
-    let products = await Product.find({ ...query });
+    let products = await Product.find({ ...query }).limit(12);
     if (!products) {
       return {
         success: false,
