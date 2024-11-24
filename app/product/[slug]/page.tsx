@@ -37,7 +37,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `Buy ${product.name} | VibeCart`,
+    title: `Buy ${product.name} product | VibeCart`,
     description: product.description,
   };
 }

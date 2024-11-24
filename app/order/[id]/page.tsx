@@ -6,6 +6,11 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Order Page | VibeCart",
+  description: "View All of your Order Details.",
+};
 const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   // checking if the ID is valid Object ID
   const id = (await params).id;

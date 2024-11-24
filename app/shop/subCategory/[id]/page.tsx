@@ -3,6 +3,18 @@ import { getRelatedProductsBySubCategoryIds } from "@/lib/database/actions/produ
 import React from "react";
 import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}): Promise<Metadata> {
+  const subCategoryName = (await searchParams).name || "";
+  return {
+    title: `Buy ${subCategoryName} Products | VibeCart`,
+    description: `Shop all ${subCategoryName} products.`,
+  };
+}
 const SubCategoryProductsPage = async ({
   params,
   searchParams,
@@ -20,6 +32,7 @@ const SubCategoryProductsPage = async ({
   const products = await getRelatedProductsBySubCategoryIds([id]).catch((err) =>
     console.log(err)
   );
+  console.log(products);
   // if ID is valid id, but if our app doesnt found any id, we will redirect users to home page:
   if (!products?.success) {
     redirect("/");
