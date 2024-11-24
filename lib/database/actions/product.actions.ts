@@ -113,6 +113,11 @@ export async function getSingleProduct(
       .populate({ path: "subCategories", model: SubCategory })
       .populate({ path: "reviews.reviewBy", model: User })
       .lean();
+    if (!product) {
+      return {
+        success: false,
+      };
+    }
     let subProduct = product?.subProducts[style];
     let prices = subProduct.sizes
       .map((s: any) => {
@@ -150,6 +155,7 @@ export async function getSingleProduct(
       };
     });
     let newProduct = {
+      success: true,
       ...product,
       style,
       images: subProduct.images,
@@ -319,6 +325,12 @@ export async function getRelatedProductsBySubCategoryIds(
         }
       : {};
     let products = await Product.find({ ...query });
+    if (!products) {
+      return {
+        success: false,
+        products: [],
+      };
+    }
     return {
       success: true,
       products: JSON.parse(JSON.stringify(products)),

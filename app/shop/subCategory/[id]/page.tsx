@@ -1,7 +1,8 @@
 import ProductCard from "@/components/shared/home/ProductCard";
 import { getRelatedProductsBySubCategoryIds } from "@/lib/database/actions/product.actions";
 import React from "react";
-
+import { ObjectId } from "mongodb";
+import { redirect } from "next/navigation";
 const SubCategoryProductsPage = async ({
   params,
   searchParams,
@@ -10,10 +11,19 @@ const SubCategoryProductsPage = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const subCategoryName = (await searchParams).name || "";
-  const id = [(await params).id];
-  const products = await getRelatedProductsBySubCategoryIds(id).catch((err) =>
+  // checking if the ID is valid Object ID
+
+  const id = (await params).id;
+  if (!ObjectId.isValid(id)) {
+    redirect("/");
+  }
+  const products = await getRelatedProductsBySubCategoryIds([id]).catch((err) =>
     console.log(err)
   );
+  // if ID is valid id, but if our app doesnt found any id, we will redirect users to home page:
+  if (!products?.success) {
+    redirect("/");
+  }
 
   const transformedSubCategoryProducts = products?.products.map(
     (product: any) => ({
