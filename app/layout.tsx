@@ -6,6 +6,7 @@ import Footer from "@/components/shared/Footer";
 import MobileBottomBar from "@/components/shared/MobileBottomBar";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+import TopBarComponent from "@/components/shared/TopBar";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <TopBarComponent />
           <Navbar />
           {children}
           <MobileBottomBar />
