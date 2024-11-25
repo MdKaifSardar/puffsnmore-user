@@ -167,8 +167,14 @@ export async function createStripeOrder(
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items: lineItems,
-    success_url: `http://localhost:3000/order/${newOrder._id}`,
-    cancel_url: `http://localhost:3000/payment/cancel`,
+    success_url:
+      process.env.NODE_ENV === "development"
+        ? `http://localhost:3000/order/${newOrder._id}`
+        : `https://vibecart-alpha.vercel.app/order/${newOrder._id}`,
+    cancel_url:
+      process.env.NODE_ENV === "development"
+        ? `http://localhost:3000/payment/cancel`
+        : `https://vibecart-alpha.vercel.app/payment/cancel`,
     metadata: { orderId: newOrder._id.toString() },
   });
 
