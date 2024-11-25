@@ -85,8 +85,8 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <div>
                   {orderData?.orderData?.paymentMethod === "cod"
                     ? "Cash on Delivery (COD)"
-                    : orderData?.orderData.paymentMethod == "razorpay" &&
-                      "RazorPay"}
+                    : orderData?.orderData.paymentMethod == "stripe" &&
+                      "Stripe"}
                 </div>
               </div>
             </div>

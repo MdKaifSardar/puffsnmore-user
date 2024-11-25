@@ -9,10 +9,23 @@ import EmailTemplate from "@/lib/emails/index";
 import { handleError } from "@/lib/utils";
 import mongoose from "mongoose";
 import { redirect } from "next/navigation";
+import { stripe } from "@/lib/stripe";
 const { ObjectId } = mongoose.Types;
+
 // create an order
 export async function createOrder(
-  products: any[],
+  products: {
+    product: string;
+    name: string;
+    image: string;
+    size: string;
+    qty: number;
+    color: { color: string; image: string };
+    price: number;
+    status: string;
+    productCompletedAt: Date | null;
+    _id: string;
+  }[],
   shippingAddress: any,
   paymentMethod: string,
   total: number,
@@ -98,4 +111,67 @@ export async function getOrderDetailsById(orderId: string) {
   } catch (error) {
     handleError(error);
   }
+}
+
+// create a stripe order instance
+export async function createStripeOrder(
+  products: {
+    product: string;
+    name: string;
+    image: string;
+    size: string;
+    qty: number;
+    color: { color: string; image: string };
+    price: number;
+    status: string;
+    productCompletedAt: Date | null;
+    _id: string;
+  }[],
+  shippingAddress: any,
+  paymentMethod: string,
+  total: number,
+  totalBeforeDiscount: number,
+  couponApplied: string,
+  userId: string,
+  totalSaved: number
+) {
+  await connectToDatabase();
+  const user = await User.findById(userId);
+  if (!user) {
+    return redirect("/sign-in");
+  }
+
+  const newOrder = await new Order({
+    user: user._id,
+    products,
+    shippingAddress,
+    paymentMethod,
+    total,
+    totalBeforeDiscount,
+    couponApplied,
+    totalSaved,
+  }).save();
+
+  const lineItems = products.map((item) => ({
+    price_data: {
+      currency: "inr",
+      unit_amount: item.price * 100,
+      product_data: {
+        name: item.name,
+        images: [item.image],
+      },
+    },
+    quantity: item.qty,
+  }));
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: lineItems,
+    success_url: `http://localhost:3000/order/${newOrder._id}`,
+    cancel_url: `http://localhost:3000/payment/cancel`,
+    metadata: { orderId: newOrder._id.toString() },
+  });
+
+  console.log("Stripe session URL:", session.url); // Verify URL in logs
+  return { sessionUrl: session.url };
 }

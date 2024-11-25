@@ -13,7 +13,10 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cart";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-import { createOrder } from "@/lib/database/actions/order.actions";
+import {
+  createOrder,
+  createStripeOrder,
+} from "@/lib/database/actions/order.actions";
 import { getSavedCartForUser } from "@/lib/database/actions/cart.actions";
 
 export default function CheckoutComponent() {
@@ -134,7 +137,7 @@ export default function CheckoutComponent() {
     return acc + curr.saved * curr.qty;
   }, 0);
   const [subTotal, setSubtotal] = useState<number>(0);
-  const carttotal = subTotal + totalSaved;
+  const carttotal = Number(subTotal + totalSaved).toFixed(0);
 
   const [placeOrderLoading, setPlaceOrderLoading] = useState<boolean>(false);
   const isDisabled =
@@ -147,8 +150,8 @@ export default function CheckoutComponent() {
       return "Place Order with COD";
     } else if (user?.address.firstName === "") {
       return "Please Add Billing Address";
-    } else if (paymentMethod === "razorpay") {
-      return `Place Order with RazorPay`;
+    } else if (paymentMethod === "stripe") {
+      return `Place Order with Stripe`;
     }
   };
 
@@ -158,16 +161,20 @@ export default function CheckoutComponent() {
   const placeOrderHandler = async () => {
     try {
       setPlaceOrderLoading(true);
-      if (paymentMethod == "") {
+
+      if (paymentMethod === "") {
         toast.error("Please choose a payment method.");
+        setPlaceOrderLoading(false);
         return;
       } else if (!user?.address.firstName) {
-        toast.error("Please fill in all details in billing address.");
+        toast.error("Please fill in all details in the billing address.");
         setPlaceOrderLoading(false);
         return;
       }
-      try {
-        await createOrder(
+
+      // For Stripe Payment
+      if (paymentMethod === "stripe") {
+        const response = await createStripeOrder(
           data?.products,
           user?.address,
           paymentMethod,
@@ -176,26 +183,44 @@ export default function CheckoutComponent() {
           coupon,
           user._id,
           totalSaved
-        )
-          .then((res) => {
-            if (res?.success) {
-              emptyCart();
-              router.replace(`/order/${res.orderId}`);
-            } else {
-              console.log("Order creation failed:", res?.message);
-              toast.error(res?.message);
-              // Handle the error case appropriately
-            }
-          })
-          .catch((err) => toast.error(err));
-      } catch (error) {
-        console.error(error);
-        // Handle errors here
+        );
+
+        // Redirect to Stripe Checkout on the client side
+        if (response?.sessionUrl) {
+          window.location.href = response.sessionUrl;
+        } else {
+          toast.error("Stripe session URL not found");
+          throw new Error("Stripe session URL not found");
+        }
+      }
+      // For other payment methods like Razorpay, handle accordingly
+      else {
+        const orderResponse = await createOrder(
+          data?.products,
+          user?.address,
+          paymentMethod,
+          totalAfterDiscount !== "" ? totalAfterDiscount : data?.cartTotal,
+          data?.cartTotal,
+          coupon,
+          user._id,
+          totalSaved
+        );
+        if (orderResponse?.success) {
+          emptyCart();
+          router.replace(`/order/${orderResponse.orderId}`);
+        } else {
+          console.error("Order creation failed:", orderResponse?.message);
+          toast.error(orderResponse?.message);
+        }
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error placing order:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setPlaceOrderLoading(false); // Reset loading state
     }
   };
+
   return (
     <div className="container mx-auto p-4 md:p-8 ">
       <h1 className="text-2xl font-bold mb-6 text-center">CHECKOUT</h1>
@@ -471,8 +496,8 @@ export default function CheckoutComponent() {
                   <Label htmlFor="cod">Cash on Delivery (COD)</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="razorpay" id="razorpay" />
-                  <Label htmlFor="razorpay">Razorpay</Label>
+                  <RadioGroupItem value="stripe" id="stripe" />
+                  <Label htmlFor="stripe">Stripe</Label>
                 </div>
               </RadioGroup>
             </form>
