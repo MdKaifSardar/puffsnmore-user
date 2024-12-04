@@ -1,4 +1,6 @@
 "use server";
+import { unstable_cache } from "next/cache";
+
 import { handleError } from "@/lib/utils";
 import { v2 as cloudinary } from "cloudinary";
 cloudinary.config({
@@ -8,17 +10,23 @@ cloudinary.config({
 });
 
 // fetch all website banners
-export const fetchAllWebsiteBanners = async () => {
-  try {
-    const result = await cloudinary.api.resources_by_tag("website_banners", {
-      type: "upload",
-      max_results: 100,
-    });
-    return result.resources.map((item, index) => item.url);
-  } catch (error) {
-    handleError(error);
+export const fetchAllWebsiteBanners = unstable_cache(
+  async () => {
+    try {
+      const result = await cloudinary.api.resources_by_tag("website_banners", {
+        type: "upload",
+        max_results: 100,
+      });
+      return result.resources.map((item, index) => item.url);
+    } catch (error) {
+      handleError(error);
+    }
+  },
+  ["website_banners"],
+  {
+    revalidate: 600,
   }
-};
+);
 // fetch all app banners
 export const fetchAllAppBanners = async () => {
   try {
