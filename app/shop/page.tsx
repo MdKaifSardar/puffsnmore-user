@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   title: "Shop All Products | VibeCart",
   description: "VibeCart - Shop all products ",
 };
-export const revalidate = 600;
 
 const ShopPage = () => {
   return (

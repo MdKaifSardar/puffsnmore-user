@@ -20,8 +20,6 @@ import {
 } from "@/lib/database/actions/product.actions";
 import { getAllSubCategoriesByName } from "@/lib/database/actions/subCategory.actions";
 
-export const revalidate = 3600;
-
 const HomePage = async () => {
   const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
     console.log(err)

@@ -17,7 +17,6 @@ export async function generateMetadata({
     description: `Shop all ${subCategoryName} products.`,
   };
 }
-export const revalidate = 1800;
 
 const SubCategoryProductsPage = async ({
   params,

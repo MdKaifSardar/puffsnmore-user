@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   title: "Order Page | VibeCart",
   description: "View All of your Order Details.",
 };
-export const revalidate = 600;
 
 const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   // checking if the ID is valid Object ID

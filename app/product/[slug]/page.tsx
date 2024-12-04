@@ -21,8 +21,6 @@ import AddtoCartButton from "@/components/shared/product/AddtoCart";
 import ProductCard from "@/components/shared/home/ProductCard";
 import { redirect } from "next/navigation";
 
-export const revalidate = 1800;
-
 // generate meta data coming from database
 export async function generateMetadata({
   params,

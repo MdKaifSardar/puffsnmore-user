@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   title: "Profile Page | VibeCart",
   description: "View Profile Page.",
 };
-export const revalidate = 0;
 
 const ProfilePage = () => {
   return (

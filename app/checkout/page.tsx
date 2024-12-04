@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   description: "Continue with Secure Checkout - Shop with Confidence.",
 };
 
-export const revalidate = 1800;
-
 const CheckoutPage = () => {
   return (
     <div>
