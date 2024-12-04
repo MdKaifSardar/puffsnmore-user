@@ -7,74 +7,69 @@ import Product from "../models/product.model";
 import SubCategory from "../models/subCategory.model";
 import User from "../models/user.model";
 import { redirect } from "next/navigation";
-
-// get all products
-export async function getAllProducts() {
-  try {
-    await connectToDatabase();
-    const products = await Product.find().sort({ createdAt: -1 }).lean();
-    if (!products) {
-      return {
-        message: "Products are not yet created!",
-        success: false,
-      };
-    }
-    return JSON.parse(JSON.stringify(products));
-  } catch (error) {
-    handleError(error);
-  }
-}
+import { unstable_cache } from "next/cache";
 
 // get all top selling products
-export async function getTopSellingProducts() {
-  try {
-    await connectToDatabase();
-    const products = await Product.find()
-      .sort({ "subProduct.sold": -1 })
-      .limit(4)
-      .lean();
-    if (!products) {
+export const getTopSellingProducts = unstable_cache(
+  async () => {
+    try {
+      await connectToDatabase();
+      const products = await Product.find()
+        .sort({ "subProduct.sold": -1 })
+        .limit(4)
+        .lean();
+      if (!products) {
+        return {
+          products: [],
+          message: "Products are not yet created!",
+          success: false,
+        };
+      }
       return {
-        products: [],
-        message: "Products are not yet created!",
-        success: false,
+        products: JSON.parse(JSON.stringify(products)),
+        success: true,
+        message: "Products fetched successully.",
       };
+    } catch (error) {
+      handleError(error);
     }
-    return {
-      products: JSON.parse(JSON.stringify(products)),
-      success: true,
-      message: "Products fetched successully.",
-    };
-  } catch (error) {
-    handleError(error);
+  },
+  ["top_selling_products"],
+  {
+    revalidate: 1800,
   }
-}
+);
 
 // get all new arrival products
-export async function getNewArrivalProducts() {
-  try {
-    await connectToDatabase();
-    const products = await Product.find()
-      .sort({ createdAt: -1 })
-      .limit(4)
-      .lean();
-    if (!products) {
+export const getNewArrivalProducts = unstable_cache(
+  async () => {
+    try {
+      await connectToDatabase();
+      const products = await Product.find()
+        .sort({ createdAt: -1 })
+        .limit(4)
+        .lean();
+      if (!products) {
+        return {
+          message: "Products are not yet created!",
+          success: false,
+          products: [],
+        };
+      }
       return {
-        message: "Products are not yet created!",
-        success: false,
-        products: [],
+        message: "Fetched all new arrival products",
+        success: true,
+        products: JSON.parse(JSON.stringify(products)),
       };
+    } catch (error) {
+      handleError(error);
     }
-    return {
-      message: "Fetched all new arrival products",
-      success: true,
-      products: JSON.parse(JSON.stringify(products)),
-    };
-  } catch (error) {
-    handleError(error);
+  },
+  ["new_arrival_products"],
+  {
+    revalidate: 1800,
   }
-}
-
+);
 // fetch products by query
 export async function getProductsByQuery(query: string) {
   try {
@@ -102,106 +97,108 @@ export async function getProductsByQuery(query: string) {
 }
 
 // get single product
-export async function getSingleProduct(
-  slug: string,
-  style: number,
-  size: number
-) {
-  try {
-    await connectToDatabase();
-    let product: any = await Product.findOne({ slug })
-      .populate({
-        path: "category",
-        model: Category,
-      })
-      .populate({ path: "subCategories", model: SubCategory })
-      .populate({ path: "reviews.reviewBy", model: User })
-      .lean();
-    if (!product) {
-      return {
-        success: false,
-      };
-    }
-    let subProduct = product?.subProducts[style];
-    let prices = subProduct.sizes
-      .map((s: any) => {
-        return s.price;
-      })
-      .sort((a: any, b: any) => {
-        return a - b;
-      });
-    // Count the number of reviews for each star rating
-    const ratingCount: any = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-    };
-    product.reviews.forEach((review: any) => {
-      const rating = review.rating;
-      if (ratingCount[rating] !== undefined) {
-        ratingCount[rating]++;
+export const getSingleProduct = unstable_cache(
+  async (slug: string, style: number, size: number) => {
+    try {
+      await connectToDatabase();
+      let product: any = await Product.findOne({ slug })
+        .populate({
+          path: "category",
+          model: Category,
+        })
+        .populate({ path: "subCategories", model: SubCategory })
+        .populate({ path: "reviews.reviewBy", model: User })
+        .lean();
+      if (!product) {
+        return {
+          success: false,
+        };
       }
-    });
-    // Calculate the total number of reviews
-    const totalReviews = product.reviews.length;
-
-    // calculate rating breakdown percentages
-    const ratingBreakdown = [1, 2, 3, 4, 5].map((stars) => {
-      const count = ratingCount[stars];
-      const percentage: any =
-        totalReviews > 0 ? ((count / totalReviews) * 100).toFixed(2) : 0;
-      return {
-        stars,
-        percentage: parseFloat(percentage),
-        count,
-      };
-    });
-    let newProduct = {
-      success: true,
-      ...product,
-      style,
-      images: subProduct.images,
-      sizes: subProduct.sizes,
-      discount: subProduct.discount,
-      sku: subProduct.sku,
-      colors: product.subProducts.map((p: any) => {
-        return p.color;
-      }),
-      priceRange:
-        prices.length > 1 &&
-        `From ₹${prices[0]} to ₹${prices[prices.length - 1]}`,
-      price:
-        subProduct.discount > 0
-          ? (
-              subProduct.sizes[size].price -
-              (subProduct.sizes[size].price * subProduct.discount) / 100
-            ).toFixed(2)
-          : subProduct.sizes[size].price,
-      priceBefore: subProduct.sizes[size].price,
-      quantity: subProduct.sizes[size].qty,
-      ratingBreakdown,
-      rating: product.rating,
-      allSizes: product.subProducts
-        .map((p: any) => {
-          return p.sizes;
+      let subProduct = product?.subProducts[style];
+      let prices = subProduct.sizes
+        .map((s: any) => {
+          return s.price;
         })
-        .flat()
         .sort((a: any, b: any) => {
-          return a.size - b.size;
-        })
-        .filter(
-          (element: any, index: any, array: any) =>
-            array.findIndex((el2: any) => el2.size === element.size) === index
-        ),
-    };
-    return JSON.parse(JSON.stringify(newProduct));
-  } catch (error) {
-    handleError(error);
-    redirect("/");
+          return a - b;
+        });
+      // Count the number of reviews for each star rating
+      const ratingCount: any = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+      };
+      product.reviews.forEach((review: any) => {
+        const rating = review.rating;
+        if (ratingCount[rating] !== undefined) {
+          ratingCount[rating]++;
+        }
+      });
+      // Calculate the total number of reviews
+      const totalReviews = product.reviews.length;
+
+      // calculate rating breakdown percentages
+      const ratingBreakdown = [1, 2, 3, 4, 5].map((stars) => {
+        const count = ratingCount[stars];
+        const percentage: any =
+          totalReviews > 0 ? ((count / totalReviews) * 100).toFixed(2) : 0;
+        return {
+          stars,
+          percentage: parseFloat(percentage),
+          count,
+        };
+      });
+      let newProduct = {
+        success: true,
+        ...product,
+        style,
+        images: subProduct.images,
+        sizes: subProduct.sizes,
+        discount: subProduct.discount,
+        sku: subProduct.sku,
+        colors: product.subProducts.map((p: any) => {
+          return p.color;
+        }),
+        priceRange:
+          prices.length > 1 &&
+          `From ₹${prices[0]} to ₹${prices[prices.length - 1]}`,
+        price:
+          subProduct.discount > 0
+            ? (
+                subProduct.sizes[size].price -
+                (subProduct.sizes[size].price * subProduct.discount) / 100
+              ).toFixed(2)
+            : subProduct.sizes[size].price,
+        priceBefore: subProduct.sizes[size].price,
+        quantity: subProduct.sizes[size].qty,
+        ratingBreakdown,
+        rating: product.rating,
+        allSizes: product.subProducts
+          .map((p: any) => {
+            return p.sizes;
+          })
+          .flat()
+          .sort((a: any, b: any) => {
+            return a.size - b.size;
+          })
+          .filter(
+            (element: any, index: any, array: any) =>
+              array.findIndex((el2: any) => el2.size === element.size) === index
+          ),
+      };
+      return JSON.parse(JSON.stringify(newProduct));
+    } catch (error) {
+      handleError(error);
+      redirect("/");
+    }
+  },
+  ["product"],
+  {
+    revalidate: 1800,
   }
-}
+);
 
 // create a product review for individual product
 export async function createProductReview(
@@ -318,46 +315,55 @@ export async function getProductDetailsById(
 }
 
 // get related products by subCategory Ids.
-export async function getRelatedProductsBySubCategoryIds(
-  subCategoryIds: string[]
-) {
-  try {
-    await connectToDatabase();
-    const query = subCategoryIds.length
-      ? {
-          subCategories: { $in: subCategoryIds },
-        }
-      : {};
-    let products = await Product.find({ ...query }).limit(12);
-    if (!products) {
+export const getRelatedProductsBySubCategoryIds = unstable_cache(
+  async (subCategoryIds: string[]) => {
+    try {
+      await connectToDatabase();
+      const query = subCategoryIds.length
+        ? {
+            subCategories: { $in: subCategoryIds },
+          }
+        : {};
+      let products = await Product.find({ ...query }).limit(12);
+      if (!products) {
+        return {
+          success: false,
+          products: [],
+        };
+      }
       return {
-        success: false,
-        products: [],
+        success: true,
+        products: JSON.parse(JSON.stringify(products)),
       };
+    } catch (error) {
+      handleError(error);
     }
-    return {
-      success: true,
-      products: JSON.parse(JSON.stringify(products)),
-    };
-  } catch (error) {
-    handleError(error);
+  },
+  ["subCatgeory_products"],
+  {
+    revalidate: 1800,
   }
-}
-
+);
 // get featured products
-export async function getAllFeaturedProducts() {
-  try {
-    await connectToDatabase();
-    const featuredProducts = await Product.find({ featured: true }).populate({
-      path: "category",
-      model: Category,
-    });
-    return {
-      featuredProducts: JSON.parse(JSON.stringify(featuredProducts)),
-      success: true,
-      message: "Successfully fetched all feautured products.",
-    };
-  } catch (error) {
-    handleError(error);
+export const getAllFeaturedProducts = unstable_cache(
+  async () => {
+    try {
+      await connectToDatabase();
+      const featuredProducts = await Product.find({ featured: true }).populate({
+        path: "category",
+        model: Category,
+      });
+      return {
+        featuredProducts: JSON.parse(JSON.stringify(featuredProducts)),
+        success: true,
+        message: "Successfully fetched all feautured products.",
+      };
+    } catch (error) {
+      handleError(error);
+    }
+  },
+  ["featured_products"],
+  {
+    revalidate: 1800,
   }
-}
+);

@@ -1,5 +1,3 @@
-// ISR(CACHE) - 10 MINUTES
-
 import OrderedProductDetailedView from "@/components/shared/order/OrderProductDeatiledView";
 import { Button } from "@/components/ui/button";
 import { getOrderDetailsById } from "@/lib/database/actions/order.actions";

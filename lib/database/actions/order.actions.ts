@@ -10,6 +10,7 @@ import { handleError } from "@/lib/utils";
 import mongoose from "mongoose";
 import { redirect } from "next/navigation";
 import { stripe } from "@/lib/stripe";
+import { unstable_cache } from "next/cache";
 const { ObjectId } = mongoose.Types;
 
 // create an order
@@ -86,32 +87,38 @@ export async function createOrder(
 }
 
 // get order details by its ID
-export async function getOrderDetailsById(orderId: string) {
-  try {
-    if (!ObjectId.isValid(orderId)) {
-      redirect("/");
+export const getOrderDetailsById = unstable_cache(
+  async (orderId: string) => {
+    try {
+      if (!ObjectId.isValid(orderId)) {
+        redirect("/");
+      }
+      await connectToDatabase();
+      const orderData = await Order.findById(orderId)
+        .populate({ path: "user", model: User })
+        .lean();
+      if (!orderData) {
+        return {
+          message: "Order not found with this ID!",
+          success: false,
+          orderData: [],
+        };
+      } else {
+        return {
+          message: "Successfully grabbed data.",
+          success: true,
+          orderData: JSON.parse(JSON.stringify(orderData)),
+        };
+      }
+    } catch (error) {
+      handleError(error);
     }
-    await connectToDatabase();
-    const orderData = await Order.findById(orderId)
-      .populate({ path: "user", model: User })
-      .lean();
-    if (!orderData) {
-      return {
-        message: "Order not found with this ID!",
-        success: false,
-        orderData: [],
-      };
-    } else {
-      return {
-        message: "Successfully grabbed data.",
-        success: true,
-        orderData: JSON.parse(JSON.stringify(orderData)),
-      };
-    }
-  } catch (error) {
-    handleError(error);
+  },
+  ["order_details"],
+  {
+    revalidate: 300,
   }
-}
+);
 
 // create a stripe order instance
 export async function createStripeOrder(

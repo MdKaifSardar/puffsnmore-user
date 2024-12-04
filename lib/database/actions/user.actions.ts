@@ -5,7 +5,6 @@ import { connectToDatabase } from "../connect";
 import Cart from "../models/cart.model";
 import Coupon from "../models/coupon.model";
 import Order from "../models/order.model";
-import Product from "../models/product.model";
 import User from "../models/user.model";
 import { handleError } from "@/lib/utils";
 
@@ -192,36 +191,6 @@ export async function applyCoupon(coupon: any, user_id: any) {
       })
     );
   } catch (error) {}
-}
-
-// get All Orders of the user:
-export async function getAllUserOrders(clerkId: string, filter: string) {
-  try {
-    await connectToDatabase();
-    let user = await User.findOne({ clerkId });
-
-    let orders = [];
-    if (filter === "") {
-      orders = await Order.find({ user: user._id })
-        .sort({ createdAt: -1 })
-        .lean();
-    } else if (filter == "paid") {
-      orders = await Order.find({ user: user._id, isPaid: true })
-        .sort({ createdAt: -1 })
-        .lean();
-    } else if (filter == "unpaid") {
-      orders = await Order.find({ user: user._id, isPaid: false })
-        .sort({ createdAt: -1 })
-        .lean();
-    } else {
-      orders = await Order.find({ user: user._id, status: filter })
-        .sort({ createdAt: -1 })
-        .lean();
-    }
-    return JSON.parse(JSON.stringify(orders));
-  } catch (error) {
-    handleError(error);
-  }
 }
 
 // get all orders of user for their profile:

@@ -28,14 +28,20 @@ export const fetchAllWebsiteBanners = unstable_cache(
   }
 );
 // fetch all app banners
-export const fetchAllAppBanners = async () => {
-  try {
-    const result = await cloudinary.api.resources_by_tag("app_banners", {
-      type: "upload",
-      max_results: 100,
-    });
-    return result.resources;
-  } catch (error) {
-    handleError(error);
+export const fetchAllAppBanners = unstable_cache(
+  async () => {
+    try {
+      const result = await cloudinary.api.resources_by_tag("app_banners", {
+        type: "upload",
+        max_results: 100,
+      });
+      return result.resources;
+    } catch (error) {
+      handleError(error);
+    }
+  },
+  ["app_banners"],
+  {
+    revalidate: 600,
   }
-};
+);
