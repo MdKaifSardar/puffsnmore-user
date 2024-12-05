@@ -5,8 +5,8 @@ import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { ObjectId } from "mongodb";
-import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import IdInvalidError from "@/components/shared/IdInvalidError";
 export const metadata: Metadata = {
   title: "Order Page | VibeCart",
   description: "View All of your Order Details.",
@@ -16,14 +16,13 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   // checking if the ID is valid Object ID
   const id = (await params).id;
   if (!ObjectId.isValid(id)) {
-    redirect("/");
+    return <IdInvalidError />;
   }
   const orderData = await getOrderDetailsById(id).catch((err) => {
     toast.error(err);
   });
-  // if ID is valid id, but if our app doesnt found any id, we will redirect users to home page:
   if (!orderData?.success) {
-    redirect("/");
+    return <IdInvalidError />;
   }
   const date = new Date(orderData?.orderData.createdAt);
   const formattedDate = date

@@ -6,6 +6,7 @@ import React from "react";
 import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import IdInvalidError from "@/components/shared/IdInvalidError";
 export async function generateMetadata({
   searchParams,
 }: {
@@ -30,7 +31,7 @@ const SubCategoryProductsPage = async ({
 
   const id = (await params).id;
   if (!ObjectId.isValid(id)) {
-    redirect("/");
+    return <IdInvalidError />;
   }
   const products = await getRelatedProductsBySubCategoryIds([id]).catch((err) =>
     console.log(err)
@@ -38,7 +39,7 @@ const SubCategoryProductsPage = async ({
   console.log(products);
   // if ID is valid id, but if our app doesnt found any id, we will redirect users to home page:
   if (!products?.success) {
-    redirect("/");
+    return <IdInvalidError />;
   }
 
   const transformedSubCategoryProducts = products?.products.map(

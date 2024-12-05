@@ -20,6 +20,7 @@ import Link from "next/link";
 import AddtoCartButton from "@/components/shared/product/AddtoCart";
 import ProductCard from "@/components/shared/home/ProductCard";
 import { redirect } from "next/navigation";
+import IdInvalidError from "@/components/shared/IdInvalidError";
 
 // generate meta data coming from database
 export async function generateMetadata({
@@ -33,9 +34,6 @@ export async function generateMetadata({
   const style = Number((await searchParams).style);
   const size = Number((await searchParams).size) || 0;
   const product = await getSingleProduct(slug, style, size);
-  if (!product.success) {
-    redirect("/");
-  }
 
   return {
     title: `Buy ${product.name} product | VibeCart`,
@@ -55,7 +53,7 @@ const ProductPage = async ({
   const sizeforButton = Number((await searchParams).size);
   const product = await getSingleProduct(slug, style, size);
   if (!product.success) {
-    redirect("/");
+    return <IdInvalidError />;
   }
   const images = product.subProducts[0].images.map((image: any) => image.url);
   const subCategoryProducts = product.subCategories.map((i: any) => i._id);
