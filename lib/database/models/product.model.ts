@@ -15,6 +15,10 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  reviewCreatedAt: {
+    type: Date,
+    required: true,
+  },
 });
 const productSchema = new mongoose.Schema(
   {

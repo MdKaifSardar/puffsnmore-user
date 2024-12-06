@@ -29,6 +29,7 @@ import { handleError } from "@/lib/utils";
 import { createProductReview } from "@/lib/database/actions/product.actions";
 import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
+import Link from "next/link";
 
 const ProductReviewComponent = ({
   product,
@@ -137,9 +138,11 @@ const ProductReviewComponent = ({
               </span>
             </div>
           ))}
-          <button className="text-sm text-blue-600 mt-2">
-            See all reviews
-          </button>
+          <Link href={`/review/${product.slug}`}>
+            <button className="text-sm text-blue-600 mt-2">
+              See all reviews
+            </button>
+          </Link>
         </div>
         <div className="md:w-2/3">
           <div className="flex justify-between mb-4">

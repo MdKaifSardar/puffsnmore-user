@@ -7,7 +7,7 @@ import Product from "../models/product.model";
 import SubCategory from "../models/subCategory.model";
 import User from "../models/user.model";
 import { redirect } from "next/navigation";
-import { unstable_cache } from "next/cache";
+import { revalidateTag, unstable_cache } from "next/cache";
 
 // get all top selling products
 export const getTopSellingProducts = unstable_cache(
@@ -197,6 +197,7 @@ export const getSingleProduct = unstable_cache(
   ["product"],
   {
     revalidate: 1800,
+    tags: ["product"],
   }
 );
 
@@ -226,6 +227,7 @@ export async function createProductReview(
             $set: {
               "reviews.$.review": review,
               "reviews.$.rating": rating,
+              "reviews.$.reviewCreatedAt": Date.now(),
             },
           },
           {
@@ -239,6 +241,7 @@ export async function createProductReview(
           updatedProduct.reviews.length;
         await updatedProduct.save();
         await updatedProduct.populate("reviews.reviewBy");
+        revalidateTag("product");
         return JSON.parse(
           JSON.stringify({ reviews: updatedProduct.reviews.reverse() })
         );
@@ -247,6 +250,7 @@ export async function createProductReview(
           reviewBy: user._id,
           rating,
           review,
+          reviewCreatedAt: Date.now(),
         };
         product.reviews.push(full_review);
         product.numReviews = product.reviews.length;
@@ -255,6 +259,7 @@ export async function createProductReview(
           product.reviews.length;
         await product.save();
         await product.populate("reviews.reviewBy");
+        revalidateTag("product");
 
         return JSON.parse(
           JSON.stringify({ reviews: product.reviews.reverse() })
