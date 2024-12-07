@@ -19,6 +19,11 @@ const reviewSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 const productSchema = new mongoose.Schema(
   {
