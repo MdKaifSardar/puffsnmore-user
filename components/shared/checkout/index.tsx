@@ -18,6 +18,8 @@ import {
   createStripeOrder,
 } from "@/lib/database/actions/order.actions";
 import { getSavedCartForUser } from "@/lib/database/actions/cart.actions";
+import DeliveryAddressForm from "./delivery.address.form";
+import ApplyCouponForm from "./apply.coupon.form";
 
 export default function CheckoutComponent() {
   const [step, setStep] = useState(1);
@@ -25,7 +27,6 @@ export default function CheckoutComponent() {
   const [address, setAddress] = useState<any>();
   const [coupon, setCoupon] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState("cod");
-  const [couponLoading, setCouponLoading] = useState<boolean>(false);
   const [couponError, setCouponError] = useState("");
   const [totalAfterDiscount, setTotalAfterDiscount] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -108,16 +109,12 @@ export default function CheckoutComponent() {
   const isActiveStep = (currentStep: number) => step === currentStep;
   const applyCouponHandler = async (e: any) => {
     e.preventDefault();
-    setCouponLoading(true);
     await applyCoupon(coupon, user._id)
       .catch((err) => {
-        setCouponLoading(false);
         setCouponError(err);
       })
       .then((res) => {
         if (res.success) {
-          setCouponLoading(false);
-
           setTotalAfterDiscount(res.totalAfterDiscount);
           setDiscount(res.discount);
           toast.success(`Applied ${res.discount}% on order successfuly.`);
@@ -125,7 +122,6 @@ export default function CheckoutComponent() {
           nextStep();
         } else if (!res.success) {
           toast.error(`No Coupon Found`);
-          setCouponLoading(false);
         }
       });
   };
@@ -351,95 +347,7 @@ export default function CheckoutComponent() {
               })}
               className="space-y-4"
             >
-              <h2 className="text-xl font-semibold mb-4">Delivery Address</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="firstName">First Name</label>
-                  <Input
-                    id="firstName"
-                    placeholder="First Name"
-                    {...form.getInputProps("firstName")}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="lastName">Last Name</label>
-                  <Input
-                    id="lastName"
-                    placeholder="Last Name"
-                    {...form.getInputProps("lastName")}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="phone">Phone Number</label>
-                <Input
-                  id="phone"
-                  placeholder="Phone Number"
-                  {...form.getInputProps("phoneNumber")}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="state">State</label>
-                <Input
-                  id="state"
-                  placeholder="State"
-                  {...form.getInputProps("state")}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="city">City</label>
-                <Input
-                  id="city"
-                  placeholder="City"
-                  {...form.getInputProps("city")}
-                  required
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="zipCode">Zip Code / Postal Code</label>
-                  <Input
-                    id="zipCode"
-                    placeholder="Zip Code / Postal Code"
-                    {...form.getInputProps("zipCode")}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="address1">Address 1</label>
-                <Input
-                  id="address1"
-                  placeholder="Address 1"
-                  {...form.getInputProps("address1")}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="address2">Address 2</label>
-                <Input
-                  id="address2"
-                  placeholder="Address 2"
-                  {...form.getInputProps("address2")}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="country">Country</label>
-                <Input
-                  id="country"
-                  placeholder="Country"
-                  {...form.getInputProps("country")}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Save Address
-              </Button>
+              <DeliveryAddressForm form={form} />
             </form>
           )}
 
@@ -451,28 +359,10 @@ export default function CheckoutComponent() {
               }}
               className="space-y-4"
             >
-              <h2 className="text-xl font-semibold mb-4">Apply Coupon</h2>
-              <div>
-                <Label htmlFor="coupon">Coupon Code</Label>
-                <Input
-                  onChange={(e: any) => setCoupon(e.target.value)}
-                  id="coupon"
-                  placeholder="Enter coupon code"
-                  required
-                />
-              </div>
-              <Button type="submit">
-                {couponLoading ? (
-                  <div className="flex gap-[10px]">
-                    <Loader className="animate-spin" /> Loading...
-                  </div>
-                ) : (
-                  "Apply Coupon"
-                )}
-              </Button>
-              {couponError && (
-                <span className={" text-red-500"}>{couponError}</span>
-              )}
+              <ApplyCouponForm
+                setCoupon={setCoupon}
+                couponError={couponError}
+              />
             </form>
           )}
 
