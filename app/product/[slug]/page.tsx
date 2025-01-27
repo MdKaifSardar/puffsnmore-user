@@ -141,7 +141,10 @@ const ProductPage = async ({
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center py-4">
               <div className="mb-4 lg:mb-0">
                 <div className="flex items-baseline gap-2 ">
-                  <span className="text-2xl lg:text-3xl font-bold">
+                  <span className="text-2xl lg:text-3xl font-bold text-[#FA6338]">
+                    ₹{product.price}
+                  </span>
+                  <span className="text-2xl lg:text-3xl font-bold text-green-500">
                     ₹{product.price}
                   </span>
                   <span>M.R.P:</span>
