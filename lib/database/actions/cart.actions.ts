@@ -9,6 +9,7 @@ import Cart from "../models/cart.model";
 // Cart operations for user:
 export async function saveCartForUser(cart: any, clerkId: string) {
   try {
+    console.log(clerkId);
     await connectToDatabase();
     let products = [];
     let user = await User.findOne({ clerkId });

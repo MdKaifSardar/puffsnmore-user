@@ -68,10 +68,12 @@ const CartDrawer = () => {
       update();
     }
   }, [cart.length > 0]);
+
   const total = cart.reduce(
     (sum: any, item: any) => sum + parseFloat(item.price) * item.qty,
     0
   );
+
   const saveCartToDbHandler = async () => {
     if (userId && userId !== null) {
       setLoading(true);

@@ -89,10 +89,11 @@ const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
         </span> */}
       </div>
       {!shop && (
-        <Link href={`/product/${product.id}`}>
-          <Button className="w-full bg-black text-white hover:bg-gray-800">
-            VIEW PRODUCT
-          </Button>
+        <Link
+          className="w-full flex flex-row justify-center items-center"
+          href={`/product/${product.slug}?style=0`}
+        >
+          <Button className="w-full sm:w-auto px-8">Learn More</Button>
         </Link>
       )}
     </div>

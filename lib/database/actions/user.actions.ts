@@ -120,6 +120,7 @@ export async function changeActiveAddress(id: any, user_id: any) {
     handleError(error);
   }
 }
+
 export async function deleteAddress(id: any, user_id: any) {
   try {
     await connectToDatabase();
@@ -141,6 +142,7 @@ export async function deleteAddress(id: any, user_id: any) {
     handleError(error);
   }
 }
+
 export async function saveAddress(address: any, user_id: any) {
   try {
     // Find the user by user_id

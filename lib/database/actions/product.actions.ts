@@ -100,6 +100,7 @@ export async function getProductsByQuery(query: string) {
 export const getSingleProduct = unstable_cache(
   async (slug: string, style: number, size: number) => {
     try {
+      console.log("product id: ", slug);
       await connectToDatabase();
       let product: any = await Product.findOne({ slug })
         .populate({
@@ -279,6 +280,7 @@ export async function getProductDetailsById(
   size: number | string
 ) {
   try {
+    console.log("product id: ", productId);
     await connectToDatabase();
     const product: any = await Product.findById(productId).lean();
 
