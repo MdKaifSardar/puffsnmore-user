@@ -40,6 +40,8 @@ export async function generateMetadata({
     description: product.description,
   };
 }
+
+
 const ProductPage = async ({
   params,
   searchParams,

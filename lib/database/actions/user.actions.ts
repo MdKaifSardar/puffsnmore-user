@@ -198,7 +198,7 @@ export async function applyCoupon(coupon: any, user_id: any) {
 // get all orders of user for their profile:
 export async function getAllUserOrdersProfile(clerkId: string) {
   try {
-    console.log(clerkId);
+    // console.log(clerkId);
     await connectToDatabase();
     let user = await User.findOne({ clerkId });
 

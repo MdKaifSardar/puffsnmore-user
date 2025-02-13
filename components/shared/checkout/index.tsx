@@ -69,7 +69,6 @@ export default function CheckoutComponent() {
   });
 
   const { userId } = useAuth();
-  console.log(userId);
   useEffect(() => {
     if (userId) {
       getSavedCartForUser(userId).then((res) => {
@@ -191,7 +190,7 @@ export default function CheckoutComponent() {
       //     throw new Error("Stripe session URL not found");
       //   }
       // }
-      
+
       // For other payment methods like Razorpay, handle accordingly
       else {
         console.log("oredr done");

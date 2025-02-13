@@ -24,22 +24,32 @@ const HomePage = async () => {
   const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
     console.log(err)
   );
+
+  
   const subcategoriesData: any = await getAllSubCategoriesByName(
     "unisex"
   ).catch((err) => console.log(err));
+
+
   const specialCombosHomeData: any = await getAllSpecialComboOffers().catch(
     (err) => console.log(err)
   );
+
+
   const crazyDealsData: any = await getAllCrazyDealOffers().catch((err) =>
     console.log(err)
   );
+
+
   const topSellingProducts = await getTopSellingProducts().catch((err) =>
     console.log(err)
   );
 
+
   const newArrivalProducts = await getNewArrivalProducts().catch((err) =>
     console.log(err)
   );
+
 
   const transformedBestSellerProducts = topSellingProducts?.products.map(
     (product: any) => ({
@@ -64,6 +74,8 @@ const HomePage = async () => {
         }),
     })
   );
+
+
   const transformedNewArrivalProducts = newArrivalProducts?.products.map(
     (product: any) => ({
       id: product._id,
@@ -87,9 +99,13 @@ const HomePage = async () => {
         }),
     })
   );
+
+
   const featuredProducts: any = await getAllFeaturedProducts().catch((err) =>
     console.log(err)
   );
+
+
   return (
     <div>
       <BannerCarousel desktopImages={desktopImages} />
