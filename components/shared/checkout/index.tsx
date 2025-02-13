@@ -31,6 +31,7 @@ export default function CheckoutComponent() {
   const [totalAfterDiscount, setTotalAfterDiscount] = useState("");
   const [discount, setDiscount] = useState(0);
   const [data, setData] = useState<any>([]);
+
   const form = useForm({
     initialValues: {
       firstName: "",
@@ -68,6 +69,7 @@ export default function CheckoutComponent() {
   });
 
   const { userId } = useAuth();
+  console.log(userId);
   useEffect(() => {
     if (userId) {
       getSavedCartForUser(userId).then((res) => {
@@ -169,28 +171,30 @@ export default function CheckoutComponent() {
       }
 
       // For Stripe Payment
-      if (paymentMethod === "stripe") {
-        const response = await createStripeOrder(
-          data?.products,
-          user?.address,
-          paymentMethod,
-          totalAfterDiscount !== "" ? totalAfterDiscount : data?.cartTotal,
-          data?.cartTotal,
-          coupon,
-          user._id,
-          totalSaved
-        );
+      // if (paymentMethod === "stripe") {
+      //   const response = await createStripeOrder(
+      //     data?.products,
+      //     user?.address,
+      //     paymentMethod,
+      //     totalAfterDiscount !== "" ? totalAfterDiscount : data?.cartTotal,
+      //     data?.cartTotal,
+      //     coupon,
+      //     user._id,
+      //     totalSaved
+      //   );
 
-        // Redirect to Stripe Checkout on the client side
-        if (response?.sessionUrl) {
-          window.location.href = response.sessionUrl;
-        } else {
-          toast.error("Stripe session URL not found");
-          throw new Error("Stripe session URL not found");
-        }
-      }
+      //   // Redirect to Stripe Checkout on the client side
+      //   if (response?.sessionUrl) {
+      //     window.location.href = response.sessionUrl;
+      //   } else {
+      //     toast.error("Stripe session URL not found");
+      //     throw new Error("Stripe session URL not found");
+      //   }
+      // }
+      
       // For other payment methods like Razorpay, handle accordingly
       else {
+        console.log("oredr done");
         const orderResponse = await createOrder(
           data?.products,
           user?.address,

@@ -68,7 +68,10 @@ export async function POST(req: Request) {
       username: username,
     };
 
+    console.log(user);
+
     const newUser = await createUser(user);
+    console.log(newUser);
 
     return NextResponse.json({ message: "OK", user: newUser, success: true });
   }

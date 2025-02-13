@@ -38,6 +38,7 @@ export async function createOrder(
   try {
     await connectToDatabase();
     const user = await User.findById(userId);
+
     if (!user) {
       return {
         message: "User not found with provided ID!",
@@ -45,6 +46,7 @@ export async function createOrder(
         orderId: null,
       };
     }
+
     const newOrder = await new Order({
       user: user._id,
       products,
@@ -55,27 +57,7 @@ export async function createOrder(
       couponApplied,
       totalSaved,
     }).save();
-    let config = {
-      service: "gmail",
-      auth: {
-        user: "raghunadhwinwin@gmail.com",
-        pass: process.env.GOOGLE_APP_PASSWORD as string,
-      },
-    };
-    let transporter = nodemailer.createTransport(config);
-    let dataConfig = {
-      from: config.auth.user,
-      to: user.email,
-      subject: "Order Confirmation - VibeCart",
-      html: await render(EmailTemplate(newOrder)),
-    };
-    await transporter.sendMail(dataConfig).then(() => {
-      return {
-        message: "You Should revieve an email",
-        orderId: JSON.parse(JSON.stringify(newOrder._id)),
-        success: true,
-      };
-    });
+
     return {
       message: "Successfully placed Order.",
       orderId: JSON.parse(JSON.stringify(newOrder._id)),
