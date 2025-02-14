@@ -351,6 +351,7 @@ export const getRelatedProductsBySubCategoryIds = unstable_cache(
     revalidate: 120,
   }
 );
+
 // get featured products
 export const getAllFeaturedProducts = unstable_cache(
   async () => {
