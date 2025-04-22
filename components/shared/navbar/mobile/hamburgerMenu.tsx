@@ -19,6 +19,20 @@ const MobileHamBurgerMenu = ({
   const handleOnClickHamurgerMenu = () => {
     setHamMenuOpen(true);
   };
+
+  // New function to handle scroll to anchor links
+  const handleNavItemClick = (link: string) => {
+    setHamMenuOpen(false);
+    const hashIndex = link.indexOf("#");
+    if (hashIndex !== -1) {
+      const elementId = link.substring(hashIndex + 1);
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <Sheet open={hamMenuOpen}>
       <SheetTrigger asChild>
@@ -39,7 +53,7 @@ const MobileHamBurgerMenu = ({
           <User size={40} className=" border-2 border-black p-1 rounded-full" />
         </div>
         <div className="mb-6">
-          <Link href="/track-order">
+          <Link href="/track-order" onClick={() => setHamMenuOpen(false)}>
             <motion.button
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -59,14 +73,14 @@ const MobileHamBurgerMenu = ({
                 "BESTSELLERS",
                 "SPECIAL COMBOS",
                 "FEATURED PRODUCTS",
-                "NEW ARRIVALS"
+                "NEW ARRIVALS",
               ].includes(item.name)
             )
             .map((item) => (
               <Link
                 key={item.name}
                 href={item.link}
-                onClick={() => setHamMenuOpen(false)} // close the menu on click
+                onClick={() => handleNavItemClick(item.link)}
                 className="flex items-center justify-between py-2 border-b border-b-gray-300"
               >
                 <div className="flex items-center space-x-4">
