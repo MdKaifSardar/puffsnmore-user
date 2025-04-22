@@ -89,18 +89,9 @@ const ProductPage = async ({
   }));
 
   return (
-    <div>
-      <Marquee className="bg-[#FFF579] flex justify-between gap-[50px] p-4 sm:hidden">
-        <p className="para mx-4">✨ Free delivery on all PrePaid Orders</p>
-        <p className="para mx-4">
-          🎁 Buy Any 3 products and get 1 gift for free
-        </p>
-        <p className="para mx-4">
-          1 Body wash cleanser + 5 SKINCARE PRODUCTS @ ₹1500
-        </p>
-      </Marquee>
+    <div className="bg-white text-black min-h-screen">
       <div className="max-w-7xl ownContainer pb-6 px-6 pt-2">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mb-[20px] ">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mb-[20px]">
           <div className="w-full lg:w-1/2 lg:sticky top-[1rem] self-start">
             <Carousel className="w-full">
               <CarouselContent>
@@ -109,6 +100,7 @@ const ProductPage = async ({
                     <div className="p-1">
                       <img
                         src={imgSrc}
+                        // src="https://res.cloudinary.com/dvmbuktx3/image/upload/v1739460246/e2xaatnrkjk0nd92p7oc.png"
                         alt={`Product Image ${index + 1}`}
                         className="w-full sticky h-auto object-cover"
                       />
@@ -120,10 +112,10 @@ const ProductPage = async ({
           </div>
           <div className="w-full lg:w-1/2 space-y-4">
             <h1 className="text-2xl lg:subHeading">{product.name}</h1>
-            <p className="text-xs lg:text-sm text-gray-500">
+            <p className="text-xs lg:text-sm text-gray-600">
               {product.category.name}
             </p>
-            <p className="text-xs lg:text-sm text-gray-500">
+            <p className="text-xs lg:text-sm text-gray-600">
               {product?.description}
             </p>
             <div className="flex items-center gap-2">
@@ -134,27 +126,23 @@ const ProductPage = async ({
                     className={`w-4 h-4 ${
                       i < product.rating
                         ? "text-yellow-400 fill-yellow-400"
-                        : "text-gray-300"
+                        : "text-gray-400"
                     }`}
                   />
                 ))}
               </div>
               <span className="text-sm font-medium">{product.rating}</span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-600">
                 ({product.numReviews} Reviews)
               </span>
             </div>
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center py-4">
               <div className="mb-4 lg:mb-0">
-                <div className="flex items-baseline gap-2 ">
+                <div className="flex items-baseline gap-2">
                   <span className="text-2xl lg:text-3xl font-bold text-[#FA6338]">
                     ₹{product.price}
                   </span>
-                  <span className="text-2xl lg:text-3xl font-bold text-green-500">
-                    ₹{product.price}
-                  </span>
-                  <span>M.R.P:</span>
-                  <span className="text-lg text-gray-500 line-through">
+                  <span className="text-lg text-gray-600 line-through">
                     ₹{product.priceBefore.toFixed(2)}
                   </span>
                   {product.discount > 0 && (
@@ -163,7 +151,7 @@ const ProductPage = async ({
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-500 ">Inclusive of all taxes</p>
+                <p className="text-sm text-gray-600">Inclusive of all taxes</p>
               </div>
               <QtyButtons product={product} size={size} style={style} />
             </div>
@@ -176,7 +164,7 @@ const ProductPage = async ({
                 Left!
               </div>
             )}
-            <div className="flex gap-[10px] ">
+            <div className="flex gap-[10px]">
               {product.sizes.map((sizes: { size: string }, index: number) => (
                 <Link
                   key={sizes.size}
@@ -185,7 +173,7 @@ const ProductPage = async ({
                   <div
                     className={`${
                       index === sizeforButton && "bg-black text-white"
-                    } h-[50px] w-[50px] rounded-full grid  items-center border border-black cursor-pointer justify-center hover:text-white hover:bg-black`}
+                    } h-[50px] w-[50px] rounded-full grid items-center border border-black cursor-pointer justify-center hover:text-white hover:bg-black`}
                   >
                     {sizes.size}
                   </div>
@@ -197,7 +185,7 @@ const ProductPage = async ({
               <div className="border-t-gray-300 border-t-2 my-[20px]">
                 <p className="mt-[10px]">
                   <b>Description</b>
-                </p>{" "}
+                </p>
                 <br />
                 <div
                   dangerouslySetInnerHTML={{ __html: product.longDescription }}
@@ -205,20 +193,19 @@ const ProductPage = async ({
               </div>
             )}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              {[
-                { icon: Clock, text: "LONG-LASTING" },
+              {[{ icon: Clock, text: "LONG-LASTING" },
                 { icon: Award, text: "CERTIFIED" },
                 { icon: Droplet, text: "QUALITY CHECKED OILS" },
                 { icon: MapPin, text: "MADE IN INDIA" },
               ].map(({ icon: Icon, text }, index) => (
                 <div
-                  className="flex flex-col items-center text-center bg-gray-100 px-1 py-8 justify-center"
+                  className="flex flex-col items-center text-center bg-gray-200 px-1 py-8 justify-center"
                   key={index}
                 >
                   <div className="rounded-full">
-                    <Icon className="w-6 h-6" />
+                    <Icon className="w-6 h-6 text-black" />
                   </div>
-                  <span className="text-xs mt-2">{text}</span>
+                  <span className="text-xs mt-2 text-gray-600">{text}</span>
                 </div>
               ))}
             </div>

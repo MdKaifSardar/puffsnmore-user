@@ -19,37 +19,32 @@ import {
   getTopSellingProducts,
 } from "@/lib/database/actions/product.actions";
 import { getAllSubCategoriesByName } from "@/lib/database/actions/subCategory.actions";
+import Preloader from "@/components/shared/Preloader";
 
 const HomePage = async () => {
   const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
     console.log(err)
   );
 
-  
   const subcategoriesData: any = await getAllSubCategoriesByName(
     "unisex"
   ).catch((err) => console.log(err));
-
 
   const specialCombosHomeData: any = await getAllSpecialComboOffers().catch(
     (err) => console.log(err)
   );
 
-
   const crazyDealsData: any = await getAllCrazyDealOffers().catch((err) =>
     console.log(err)
   );
-
 
   const topSellingProducts = await getTopSellingProducts().catch((err) =>
     console.log(err)
   );
 
-
   const newArrivalProducts = await getNewArrivalProducts().catch((err) =>
     console.log(err)
   );
-
 
   const transformedBestSellerProducts = topSellingProducts?.products.map(
     (product: any) => ({
@@ -75,7 +70,6 @@ const HomePage = async () => {
     })
   );
 
-
   const transformedNewArrivalProducts = newArrivalProducts?.products.map(
     (product: any) => ({
       id: product._id,
@@ -100,30 +94,33 @@ const HomePage = async () => {
     })
   );
 
-
   const featuredProducts: any = await getAllFeaturedProducts().catch((err) =>
     console.log(err)
   );
 
-
   return (
-    <div>
+    <div className="bg-white text-black min-h-screen relative">
+      <Preloader />
       <BannerCarousel desktopImages={desktopImages} />
       <SpecialCombos comboData={specialCombosHomeData} />
-      <ProductCard
-        heading="BEST SELLERS"
-        products={transformedBestSellerProducts}
-      />
-      <CategorySection subCategories={subcategoriesData.subCategories} />
+      <div className="bg-gray-100">
+        <ProductCard
+          heading="BEST SELLERS"
+          products={transformedBestSellerProducts}
+        />
+      </div>
+      {/* <CategorySection subCategories={subcategoriesData.subCategories} /> */}
       <FeaturedProducts products={featuredProducts.featuredProducts} />
       <CrazyDeals dealsData={crazyDealsData} />
       <NeedOfWebsite />
-      <ProductCard
-        heading="NEW ARRIVALS"
-        products={transformedNewArrivalProducts}
-      />
+      <div className="bg-gray-100">
+        <ProductCard
+          heading="NEW ARRIVALS"
+          products={transformedNewArrivalProducts}
+        />
+      </div>
       <ReviewSection />
-      <BlogImages />
+      {/* <BlogImages /> */}
     </div>
   );
 };

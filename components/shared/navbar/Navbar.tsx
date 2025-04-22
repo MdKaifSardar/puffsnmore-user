@@ -17,39 +17,28 @@ const Navbar = () => {
     { name: "SHOP ALL", icon: <LuStore size={24} /> },
     { name: "BESTSELLERS", icon: <GrLike size={24} /> },
     {
-      name: "PERFUMES",
-      icon: <GiPerfumeBottle size={24} />,
-      hasSubmenu: true,
-      submenu: [
-        { name: "Men's Perfume" },
-        { name: "Women's Perfume" },
-        { name: "Unisex Perfume" },
-        { name: "New Arrivals" },
-      ],
-    },
-    {
-      name: "BATH & BODY",
+      name: "VAPE DEVICES",
       icon: <FaBath size={24} />,
       hasSubmenu: true,
       submenu: [
-        { name: "Shower Gel" },
-        { name: "Body Lotion" },
-        { name: "Hand Cream" },
-        { name: "Body Scrub" },
+        { name: "Pod Systems" },
+        { name: "Box Mods" },
+        { name: "Disposable Vapes" },
+        { name: "Starter Kits" },
       ],
     },
-    { name: "MAKEUP", icon: <PiHighlighterCircleBold size={24} /> },
     {
-      name: "SKINCARE",
-      icon: <MdFace4 size={24} />,
+      name: "E-LIQUIDS",
+      icon: <PiHighlighterCircleBold size={24} />,
       hasSubmenu: true,
       submenu: [
-        { name: "Cleansers" },
-        { name: "Moisturizers" },
-        { name: "Serums" },
-        { name: "Sunscreen" },
+        { name: "Fruity Flavors" },
+        { name: "Dessert Flavors" },
+        { name: "Menthol Flavors" },
+        { name: "Tobacco Flavors" },
       ],
     },
+    { name: "ACCESSORIES", icon: <MdFace4 size={24} /> },
   ];
 
   return (
@@ -65,9 +54,13 @@ const Navbar = () => {
           </div>
 
           <div className="flex-1 flex items-center justify-center lg:w-1/3">
-            <Link href={"/"}>
-              {" "}
-              <h1 className="text-2xl font-bold">VIBECART</h1>
+            <Link href={"/"} className="flex items-center gap-2">
+              <img
+                src="https://puffsnmore.com/wp-content/uploads/2025/02/2.png"
+                alt="Puffsnmore Logo"
+                className="h-8 w-auto"
+              />
+              <h1 className="text-2xl font-bold">Puffsnmore</h1>
             </Link>
           </div>
 

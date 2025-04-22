@@ -1,7 +1,9 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
-
 import Link from "next/link";
+import { motion } from "framer-motion";
+
 interface Product {
   id: string;
   name: string;
@@ -21,13 +23,14 @@ interface Product {
 const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
   return (
     <div
-      className="w-full flex-shrink-0 mb-2 group  justify-center "
+      className="w-full flex-shrink-0 mb-2 group justify-center bg-gray-200 text-black p-4 rounded-lg shadow-md"
       key={product.slug}
     >
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden bg-gray-200 rounded-lg">
         <Link href={`/product/${product.slug}?style=0`}>
           <img
             src={product.image}
+            // src="https://res.cloudinary.com/dvmbuktx3/image/upload/v1739460246/e2xaatnrkjk0nd92p7oc.png"
             alt={product.name}
             className="w-full h-auto object-cover mb-4 transition-transform duration-700 ease-in-out transform group-hover:scale-110"
           />
@@ -51,7 +54,7 @@ const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
         )}
       </div>
       {shop ? null : (
-        <div className="text-xs text-gray-500 mb-1 textGap text-[10px]">
+        <div className="text-xs text-gray-600 mb-1 textGap text-[10px]">
           {product.category.length > 25
             ? product.category.substring(0, 25) + "..."
             : product.category}
@@ -66,7 +69,7 @@ const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
       <div className="flex items-center mb-2">
         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
         <span className="text-sm font-semibold ml-1">{product.rating}</span>
-        <span className="text-xs text-gray-500 ml-2">
+        <span className="text-xs text-gray-600 ml-2">
           ({product.reviews} Reviews)
         </span>
       </div>
@@ -110,9 +113,9 @@ const ProductCard = ({
   products: any[];
 }) => {
   return products.length > 0 ? (
-    <div className="ownContainer mx-auto mb-[20px]">
+    <div className="ownContainer mx-auto pb-[2rem] mb-[20px]">
       <div className="flex justify-center">
-        <div className="heading ownContainer uppercase sm:my-[40px]">
+        <div className="py-[2rem] heading ownContainer uppercase sm:my-[40px]">
           {heading}
         </div>
       </div>
@@ -124,8 +127,16 @@ const ProductCard = ({
               : "flex overflow-x-auto gap-4 sm:gap-6 scroll-smooth no-scrollbar sm:grid sm:grid-cols-2 lg:grid-cols-4"
           } mb-8 `}
         >
-          {products.map((product) => (
-            <Card key={product.id} product={product} shop={shop} />
+          {products.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: -50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              viewport={{ once: false }}  // repeat animation every time in view
+            >
+              <Card product={product} shop={shop} />
+            </motion.div>
           ))}
         </div>
       </div>
@@ -133,7 +144,7 @@ const ProductCard = ({
         <div className="flex justify-center mt-8">
           <Button
             variant={"outline"}
-            className="w-[90%] sm:w-[347px] border-2 border-black textGap px-[10px] py-[20px]"
+            className="w-[90%] sm:w-[347px] border-2 border-black text-black px-[10px] py-[20px]"
           >
             VIEW ALL
           </Button>

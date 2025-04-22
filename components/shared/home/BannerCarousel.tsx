@@ -4,50 +4,28 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const mobileImages = [
-  "https://placehold.co/400x200?text=Mobile+Slide+1",
-  "https://placehold.co/400x200?text=Mobile+Slide+2",
-  "https://placehold.co/400x200?text=Mobile+Slide+3",
-  "https://placehold.co/400x200?text=Mobile+Slide+4",
-];
-
 const BannerCarousel = ({ desktopImages }: { desktopImages: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % desktopImages.length);
   };
   const prevSlide = () => {
     setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+      (prevIndex) => (prevIndex - 1 + desktopImages.length) % desktopImages.length
     );
   };
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 485); // Detect if the screen is mobile size
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize(); // Initial check
-
     const interval = setInterval(nextSlide, 5000);
     return () => {
       clearInterval(interval);
-      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  const images = isMobile ? mobileImages : desktopImages;
-
   return (
-    <div
-      className={`relative w-full ${
-        isMobile ? "h-[400px]" : "h-[400px]"
-      } overflow-hidden mb-[20px]`}
-    >
-      {images.map((src, index) => (
+    <div className="relative w-full h-[85vh] overflow-hidden mb-[20px]">
+      {desktopImages.map((src, index) => (
         <div
           key={index}
           className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out ${
@@ -55,7 +33,7 @@ const BannerCarousel = ({ desktopImages }: { desktopImages: string[] }) => {
           }`}
         >
           <img
-            src={src}
+            src={`${src}?quality=100`} // Ensure high-quality images
             alt={`Slide ${index + 1}`}
             className="w-full h-full object-cover"
           />
@@ -80,7 +58,7 @@ const BannerCarousel = ({ desktopImages }: { desktopImages: string[] }) => {
         <ChevronRight size={24} />
       </Button>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {images.map((_, index) => (
+        {desktopImages.map((_, index) => (
           <button
             key={index}
             className={`w-3 h-3 rounded-full ${

@@ -75,13 +75,13 @@ const OrderedProductDetailedView = ({ item }: { item: any }) => {
           </div>
           <div className="text-[10px] sm:text-[15px]">{item.status}</div>
         </div>
-        {item.status === "Not Processed" && (
+        {/* {item.status === "Not Processed" && (
           <div className="flex justify-end self-end ">
             <Button className="text-[10px] sm:text-[15px]" variant={"ghost"}>
               Cancel this product
             </Button>
           </div>
-        )}
+        )} */}
         <Button onClick={() => setOpen(!open)} variant={"ghost"} className="">
           {open ? <FaChevronCircleUp /> : <FaChevronCircleDown />}
         </Button>

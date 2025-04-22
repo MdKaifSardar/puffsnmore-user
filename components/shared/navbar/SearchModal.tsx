@@ -56,11 +56,11 @@ const SearchModal = ({ setOpen }: { setOpen: any }) => {
     if (query.length > 0) fetchDataByQuery();
   }, [query.length]);
   const trendingSearches = [
-    "Perfume",
-    "Bath & Body",
-    "Gifting",
-    "Crazy Deals",
-    "Combos",
+    "Vape Devices",
+    "E-Liquids",
+    "Pod Systems",
+    "Disposable Vapes",
+    "Starter Kits",
   ];
 
   return (
