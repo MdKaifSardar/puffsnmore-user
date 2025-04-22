@@ -85,6 +85,7 @@ const MobileHamBurgerMenu = ({
                       "BESTSELLERS",
                       "SPECIAL COMBOS",
                       "NEW ARRIVALS",
+                      "FEATURED PRODUCTS",
                     ].includes(item.name)
                   )
                   .map((item) => (
