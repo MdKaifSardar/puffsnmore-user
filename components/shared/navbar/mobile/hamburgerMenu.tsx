@@ -1,15 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Menu, ChevronRight, User, X } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAtom, useStore } from "jotai";
+import { hamburgerMenuState } from "../store";
 
 const MobileHamBurgerMenu = ({
   navItems,
 }: {
   navItems: { name: string; icon: any; hasSubmenu?: boolean; link: string }[];
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [hamMenuOpen, setHamMenuOpen] = useAtom(hamburgerMenuState, { store: useStore() });
 
   const handleNavItemClick = (link: string) => {
     const hashIndex = link.indexOf("#");
@@ -20,7 +22,7 @@ const MobileHamBurgerMenu = ({
         element.scrollIntoView({ behavior: "smooth" });
       }
     }
-    setMenuOpen(false);
+    setHamMenuOpen(false);
   };
 
   // Framer Motion variants for sliding in/out
@@ -38,11 +40,11 @@ const MobileHamBurgerMenu = ({
 
   return (
     <>
-      <button className="lg:hidden mr-2" onClick={() => setMenuOpen(true)}>
+      <button className="lg:hidden mr-2" onClick={() => setHamMenuOpen(true)}>
         <Menu size={24} />
       </button>
       <AnimatePresence>
-        {menuOpen && (
+        {hamMenuOpen && (
           <motion.div
             className="fixed inset-0 z-50 flex"
             variants={containerVariants}
@@ -59,7 +61,7 @@ const MobileHamBurgerMenu = ({
             >
               {/* Close cross at top right */}
               <button
-                onClick={() => setMenuOpen(false)}
+                onClick={() => setHamMenuOpen(false)}
                 className="absolute top-4 right-4 z-10"
               >
                 <X size={24} />
@@ -70,7 +72,7 @@ const MobileHamBurgerMenu = ({
               <div className="mb-6 px-4">
                 <Link
                   href="/track-order"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => setHamMenuOpen(false)}
                   className="block w-full text-sm py-1 bg-[#E4E4E4] rounded text-center"
                 >
                   TRACK ORDER
@@ -104,7 +106,7 @@ const MobileHamBurgerMenu = ({
                   ))}
               </div>
             </motion.div>
-            <div className="flex-grow" onClick={() => setMenuOpen(false)}></div>
+            <div className="flex-grow" onClick={() => setHamMenuOpen(false)}></div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -113,3 +115,4 @@ const MobileHamBurgerMenu = ({
 };
 
 export default MobileHamBurgerMenu;
+
