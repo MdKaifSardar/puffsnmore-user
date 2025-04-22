@@ -62,10 +62,10 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 href={item.link}
+                scroll={false} // added scroll={false} for mobile smooth scroll
                 className="text-sm font-medium text-gray-700 hover:text-gray-900 group transition duration-300"
               >
                 {item.name}
-
                 <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black"></span>
               </Link>
             ))}

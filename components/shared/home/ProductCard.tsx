@@ -96,7 +96,7 @@ const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
           className="w-full flex flex-row justify-center items-center"
           href={`/product/${product.slug}?style=0`}
         >
-          <Button className="w-full sm:w-auto px-8">Buy</Button>
+          <Button className="w-full sm:w-auto px-8">Buy Now</Button>
         </Link>
       )}
     </div>

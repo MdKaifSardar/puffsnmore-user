@@ -1,8 +1,8 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const BannerCarousel = ({ desktopImages }: { desktopImages: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,7 +24,7 @@ const BannerCarousel = ({ desktopImages }: { desktopImages: string[] }) => {
   }, []);
 
   return (
-    <div className="relative w-full h-[85vh] overflow-hidden mb-[20px]">
+    <div className="relative w-full h-[40vh] md:h-[85vh] overflow-hidden mb-[20px]">
       {desktopImages.map((src, index) => (
         <div
           key={index}
@@ -32,8 +32,10 @@ const BannerCarousel = ({ desktopImages }: { desktopImages: string[] }) => {
             index === currentIndex ? "opacity-100" : "opacity-0"
           }`}
         >
-          <img
-            src={`${src}?quality=100`} // Ensure high-quality images
+          <Image
+            width={1920}
+            height={1080}
+            src={`${src}?quality=100`}
             alt={`Slide ${index + 1}`}
             className="w-full h-full object-cover"
           />

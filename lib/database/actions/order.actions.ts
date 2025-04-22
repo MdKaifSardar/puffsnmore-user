@@ -98,7 +98,7 @@ export const getOrderDetailsById = unstable_cache(
   },
   ["order_details"],
   {
-    revalidate: 300,
+    revalidate: 100,
   }
 );
 
