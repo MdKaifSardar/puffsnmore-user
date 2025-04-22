@@ -69,6 +69,7 @@ const ShopPageComponent = () => {
                   alt={item.name}
                   width={450}
                   height={320}
+                  className="object-cover h-[320px] w-full"
                 />
               </Link>
               <div className="">{item.name}</div>

@@ -51,8 +51,7 @@ const ProductPage = async ({
 }) => {
   const slug = (await params).slug;
   const style = Number((await searchParams).style);
-  const size = Number((await searchParams).size) || 0;
-  const sizeforButton = Number((await searchParams).size);
+  const size = 0;
   const product = await getSingleProduct(slug, style, size);
 
   if (!product.success) {
@@ -155,31 +154,12 @@ const ProductPage = async ({
               </div>
               <QtyButtons product={product} size={size} style={style} />
             </div>
-            {product.subProducts[0].sizes[size].qty <= 10 && (
-              <div>
-                <b className="text-red-500">Hurry Up!</b> Only{" "}
-                <b className="text-red-500">
-                  {product.subProducts[0].sizes[size].qty}
-                </b>{" "}
-                Left!
+            {/* New Quantity Warning */}
+            {product.quantity > 0 && (
+              <div className="mb-4 text-md font-bold text-[#FA6338]">
+                Hurry up only {product.quantity} left
               </div>
             )}
-            <div className="flex gap-[10px]">
-              {product.sizes.map((sizes: { size: string }, index: number) => (
-                <Link
-                  key={sizes.size}
-                  href={`/product/${product.slug}?style=${style}&size=${index}`}
-                >
-                  <div
-                    className={`${
-                      index === sizeforButton && "bg-black text-white"
-                    } h-[50px] w-[50px] rounded-full grid items-center border border-black cursor-pointer justify-center hover:text-white hover:bg-black`}
-                  >
-                    {sizes.size}
-                  </div>
-                </Link>
-              ))}
-            </div>
             <AddtoCartButton product={product} size={size} />
             {product.longDescription.length > 0 && (
               <div className="border-t-gray-300 border-t-2 my-[20px]">
@@ -196,7 +176,7 @@ const ProductPage = async ({
               {[{ icon: Clock, text: "LONG-LASTING" },
                 { icon: Award, text: "CERTIFIED" },
                 { icon: Droplet, text: "QUALITY CHECKED OILS" },
-                { icon: MapPin, text: "MADE IN INDIA" },
+                { icon: MapPin, text: "MADE IN DUBAI" },
               ].map(({ icon: Icon, text }, index) => (
                 <div
                   className="flex flex-col items-center text-center bg-gray-200 px-1 py-8 justify-center"

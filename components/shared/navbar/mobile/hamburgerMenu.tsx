@@ -5,11 +5,13 @@ import { hamburgerMenuState } from "../store";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Menu, Package, Truck, User } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 const MobileHamBurgerMenu = ({
   navItems,
 }: {
-  navItems: { name: string; icon: any; hasSubmenu?: boolean }[];
+  navItems: { name: string; icon: any; hasSubmenu?: boolean; link: string }[];
 }) => {
   const [hamMenuOpen, setHamMenuOpen] = useAtom(hamburgerMenuState, {
     store: useStore(),
@@ -35,46 +37,45 @@ const MobileHamBurgerMenu = ({
       >
         <div className="flex items-center space-x-4 mb-2">
           <User size={40} className=" border-2 border-black p-1 rounded-full" />
-          {/* <div>
-            <p className="text-sm font-medium">Download our app</p>
-            <p className="text-sm text-muted-foreground">and get 10% OFF!</p>
-          </div> */}
         </div>
-        {/* <Button className="w-full mb-2 bg-red-500 hover:bg-red-600 text-white rounded-none">
-          Download App
-        </Button> */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <Button
-            variant="outline"
-            className="flex items-center justify-center space-x-2 bg-[#E4E4E4] rounded-none"
-          >
-            <Package size={20} />
-            <span>MY ORDERS</span>
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center justify-center space-x-2 bg-[#E4E4E4] rounded-none"
-          >
-            <Truck size={20} />
-            <span>TRACK ORDER</span>
-          </Button>
+        <div className="mb-6">
+          <Link href="/track-order">
+            <motion.button
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="w-full text-sm py-1 bg-[#E4E4E4] rounded"
+            >
+              TRACK ORDER
+            </motion.button>
+          </Link>
         </div>
         <div className="space-y-4">
-          {navItems.map((item) => (
-            <div
-              key={item.name}
-              className="flex items-center justify-between py-2 border-b border-b-gray-300"
-            >
-              <div className="flex items-center space-x-4">
-                {item.icon}
-                <span className="font-medium">{item.name}</span>
-              </div>
-              {item.hasSubmenu && <ChevronRight size={20} />}
-            </div>
-          ))}
-        </div>
-        <div className="mt-6 bg-green-500 p-4 rounded-lg">
-          <p className="text-white font-bold">NEW LAUNCH ALERT!</p>
+          {navItems
+            .filter((item) =>
+              [
+                "CRAZY DEALS",
+                "SHOP ALL",
+                "BESTSELLERS",
+                "SPECIAL COMBOS",
+                "FEATURED PRODUCTS",
+                "NEW ARRIVALS"
+              ].includes(item.name)
+            )
+            .map((item) => (
+              <Link
+                key={item.name}
+                href={item.link}
+                onClick={() => setHamMenuOpen(false)} // close the menu on click
+                className="flex items-center justify-between py-2 border-b border-b-gray-300"
+              >
+                <div className="flex items-center space-x-4">
+                  {item.icon}
+                  <span className="font-medium">{item.name}</span>
+                </div>
+                {item.hasSubmenu && <ChevronRight size={20} />}
+              </Link>
+            ))}
         </div>
       </SheetContent>
     </Sheet>

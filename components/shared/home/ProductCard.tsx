@@ -96,7 +96,7 @@ const Card = ({ product, shop }: { product: Product; shop?: boolean }) => {
           className="w-full flex flex-row justify-center items-center"
           href={`/product/${product.slug}?style=0`}
         >
-          <Button className="w-full sm:w-auto px-8">Learn More</Button>
+          <Button className="w-full sm:w-auto px-8">Buy</Button>
         </Link>
       )}
     </div>
@@ -142,12 +142,14 @@ const ProductCard = ({
       </div>
       {!shop && (
         <div className="flex justify-center mt-8">
-          <Button
-            variant={"outline"}
-            className="w-[90%] sm:w-[347px] border-2 border-black text-black px-[10px] py-[20px]"
-          >
-            VIEW ALL
-          </Button>
+          <Link href="/shop">
+            <Button
+              variant={"outline"}
+              className="w-[90%] sm:w-[347px] border-2 border-black text-black px-[10px] py-[20px]"
+            >
+              VIEW ALL
+            </Button>
+          </Link>
         </div>
       )}
     </div>

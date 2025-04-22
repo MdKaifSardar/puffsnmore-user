@@ -171,7 +171,7 @@ const ProductCarousel = ({ products }: { products: any[] }) => {
 
 export default function FeaturedProducts({ products }: { products: any[] }) {
   return (
-    <div className="space-y-12">
+    <div id="featuredproducts" className="space-y-12">
       <ProductCarousel products={products} />
     </div>
   );

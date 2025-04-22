@@ -119,7 +119,6 @@ const SearchModal = ({ setOpen }: { setOpen: any }) => {
                             alt={product.name}
                             className="absolute inset-0 w-[200px] h-full object-cover rounded-none"
                           />
-
                           {product.subProducts[0]?.discount > 0 && (
                             <span className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
                               {product.subProducts[0]?.discount}% OFF
@@ -132,19 +131,19 @@ const SearchModal = ({ setOpen }: { setOpen: any }) => {
                           </h4>
                           <div className="flex items-baseline gap-2">
                             <span className="font-bold">
-                              ₹{product.subProducts[0]?.sizes[0]?.price}
+                              ₹{Number(product.subProducts[0]?.sizes[0]?.price).toFixed(2)}
                             </span>
                             <span className="text-sm text-gray-500 line-through">
-                              ₹
-                              {product.subProducts[0]?.sizes[0]?.price *
-                                (1 + product.subProducts[0]?.discount / 100)}
+                              ₹{Number(product.subProducts[0]?.sizes[0]?.price *
+                                (1 + product.subProducts[0]?.discount / 100)
+                              ).toFixed(2)}
                             </span>
                           </div>
                         </div>
                       </div>
                     </Link>
                   ))
-                : products.map((product: any, index) => (
+                : products.map((product: any, index: number) => (
                     <Link key={index} href={`/product/${product.slug}?style=0`}>
                       <div className="space-y-2 min-w-[110px] flex-shrink-0 sm:min-w-0">
                         <div className="aspect-square relative">
@@ -165,23 +164,20 @@ const SearchModal = ({ setOpen }: { setOpen: any }) => {
                           </h4>
                           <div className="flex items-baseline gap-2">
                             <span className="font-bold">
-                              ₹
-                              {product.subProducts[0]?.discount > 0
+                              ₹{product.subProducts[0]?.discount > 0
                                 ? (
                                     product.subProducts[0].sizes[0].price -
                                     (product.subProducts[0].sizes[0].price *
-                                      product.subProducts[0].discount) /
-                                      100
+                                      product.subProducts[0].discount) / 100
                                   ).toFixed(2)
-                                : product.subProducts[0].sizes[0].price}
+                                : Number(product.subProducts[0].sizes[0].price).toFixed(2)}
                             </span>
                             <span className="text-sm text-gray-500 line-through">
                               {product.subProducts[0]?.discount > 0 && (
                                 <div>
-                                  ₹{product.subProducts[0]?.sizes[0]?.price}
+                                  ₹{Number(product.subProducts[0]?.sizes[0]?.price).toFixed(2)}
                                 </div>
                               )}
-                              {/* ₹{product.subProducts[0]?.sizes[0]?.price} */}
                             </span>
                           </div>
                         </div>

@@ -10,7 +10,7 @@ type CrazyDealsDataType = {
 
 const CrazyDeals = ({ dealsData }: { dealsData: CrazyDealsDataType }) => {
   return (
-    <div className="w-full h-fit mx-auto px-4 py-[3rem] mb-[20px] bg-gray-100 rounded-lg">
+    <div id="crazydeals" className="w-full h-fit mx-auto px-4 py-[3rem] mb-[20px] bg-gray-100 rounded-lg">
       <div className="heading mb-[10px] ownContainer text-center uppercase sm:mb-[40px]">
         Crazy Deals
       </div>

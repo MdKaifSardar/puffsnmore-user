@@ -33,25 +33,27 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     })
     .toUpperCase();
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="max-w-full mx-auto bg-gray-800 shadow-md">
+    <div className="min-h-screen bg-gray-50 text-black">
+      {" "}
+      {/* updated bg */}
+      <div className="max-w-full mx-auto bg-white shadow-md">
+        {" "}
+        {/* updated bg */}
         <div className="p-4 md:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center mb-4">
-              <ArrowLeft className="w-5 h-5 mr-2 text-white" />
-              <span className="text-sm font-medium text-white">Home</span>
+              <ArrowLeft className="w-5 h-5 mr-2 text-black" />
+              <span className="text-sm font-medium text-black">Home</span>
             </div>
 
             <div className="text-center mb-6">
-              <h1 className="text-2xl font-bold capitalize text-white">
+              <h1 className="text-2xl font-bold capitalize text-black">
                 THANK YOU, {orderData?.orderData.user.username}
               </h1>
-              <p className="text-gray-400">
-                Order ID: {orderData?.orderData._id}
-              </p>
+              <p className="text-black">Order ID: {orderData?.orderData._id}</p>
             </div>
             {/* Order Details Section */}
-            <div className="mb-6 border rounded-lg overflow-hidden bg-gray-700 text-white">
+            <div className="mb-6 border rounded-lg overflow-hidden bg-gray-100 text-black">
               <div className="flex flex-wrap">
                 <div className="w-full sm:w-1/2 md:w-1/5 p-4 border-b sm:border-b-0 sm:border-r">
                   <div className="font-semibold text-sm mb-1">
@@ -95,23 +97,23 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                     <h2 className="text-xl font-semibold">
                       Your order is confirmed
                     </h2>
-                    <p className="text-gray-400">
+                    <p className="text-black">
                       Order will be delivered to you in 2-3 days on following
                       address
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-gray-800 p-4 rounded-lg mb-4">
+                <div className="bg-gray-100 p-4 rounded-lg mb-4">
                   <div className="flex justify-between mb-2">
                     <span className="font-medium capitalize">
                       {orderData?.orderData.user.username}
                     </span>
-                    <span className="text-gray-400">
+                    <span className="text-black">
                       {orderData?.orderData.user.address.phoneNumber}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-black">
                     {orderData?.orderData.user.address.address1}
                     <br />
                     {orderData?.orderData.user.address.address2},
@@ -137,7 +139,7 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                       ₹ {orderData?.orderData.total}
                     </span>
                   </div>
-                  
+
                   {orderData?.orderData.products.map(
                     (item: any, index: number) => (
                       <div key={index}>
@@ -149,7 +151,7 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                           />
                           <div>
                             <h3 className="font-medium">{item.name}</h3>
-                            <p className="text-sm text-gray-400">
+                            <p className="text-sm text-black">
                               {item.size} • Qty {item.qty}
                             </p>
                             <div className="flex items-center mt-1">
@@ -186,10 +188,10 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                   </div>
                 )}
 
-                <div className="bg-gray-800 rounded-lg p-4">
+                <div className="bg-gray-50 rounded-lg p-4">
                   <h2 className="text-lg font-semibold mb-4">Bill Details</h2>
                   <div className="space-y-2">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between border-b border-gray-300 pb-2">
                       <span>Total MRP</span>
                       <span>
                         ₹
@@ -197,14 +199,14 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                           orderData?.orderData.totalSaved}
                       </span>
                     </div>
-                    <div className="flex justify-between text-green-600">
+                    <div className="flex justify-between border-b border-gray-300 pb-2 text-black">
                       <span>Product Discount</span>
                       <span>- ₹{orderData?.orderData.totalSaved}</span>
                     </div>
                     {orderData?.orderData.totalBeforeDiscount -
                       orderData?.orderData.total >
                       0 && (
-                      <div className="flex justify-between text-green-600">
+                      <div className="flex justify-between border-b border-gray-300 pb-2 text-black">
                         <span>
                           Coupon Discount ({orderData?.orderData.couponApplied})
                         </span>
@@ -216,7 +218,7 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                       </div>
                     )}
 
-                    <div className="flex justify-between font-semibold pt-2 border-t border-t-black">
+                    <div className="flex justify-between font-semibold pt-2 border-t border-gray-300">
                       <span>Subtotal</span>
                       <span>₹{orderData?.orderData.total.toFixed(2)}</span>
                     </div>

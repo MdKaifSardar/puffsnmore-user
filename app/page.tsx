@@ -20,6 +20,7 @@ import {
 } from "@/lib/database/actions/product.actions";
 import { getAllSubCategoriesByName } from "@/lib/database/actions/subCategory.actions";
 import Preloader from "@/components/shared/Preloader";
+import AgePopupComponent from "@/components/shared/AgePopupComponent";
 
 const HomePage = async () => {
   const desktopImages: any = await fetchAllWebsiteBanners().catch((err) =>
@@ -100,10 +101,11 @@ const HomePage = async () => {
 
   return (
     <div className="bg-white text-black min-h-screen relative">
+      <AgePopupComponent />
       <Preloader />
       <BannerCarousel desktopImages={desktopImages} />
       <SpecialCombos comboData={specialCombosHomeData} />
-      <div className="bg-gray-100">
+      <div id="bestsellers" className="bg-gray-100">
         <ProductCard
           heading="BEST SELLERS"
           products={transformedBestSellerProducts}
@@ -113,7 +115,7 @@ const HomePage = async () => {
       <FeaturedProducts products={featuredProducts.featuredProducts} />
       <CrazyDeals dealsData={crazyDealsData} />
       <NeedOfWebsite />
-      <div className="bg-gray-100">
+      <div id="newarrivals" className="bg-gray-100">
         <ProductCard
           heading="NEW ARRIVALS"
           products={transformedNewArrivalProducts}

@@ -2,9 +2,8 @@ import { RiDiscountPercentFill } from "react-icons/ri";
 import { LuStore } from "react-icons/lu";
 import { GrLike } from "react-icons/gr";
 import { GiPerfumeBottle } from "react-icons/gi";
-import { FaBath } from "react-icons/fa";
-import { PiHighlighterCircleBold } from "react-icons/pi";
-import { MdFace4 } from "react-icons/md";
+import { BiNews } from "react-icons/bi"; // new icon for New Arrivals
+import { MdFeaturedPlayList } from "react-icons/md"; // new import
 import Link from "next/link";
 import CartDrawer from "./CartDrawer";
 import MobileHamBurgerMenu from "./mobile/hamburgerMenu";
@@ -13,32 +12,12 @@ import AccountDropDown from "@/components/shared/navbar/AccountDropDown";
 
 const Navbar = () => {
   const navItems = [
-    { name: "CRAZY DEALS", icon: <RiDiscountPercentFill size={24} /> },
-    { name: "SHOP ALL", icon: <LuStore size={24} /> },
-    { name: "BESTSELLERS", icon: <GrLike size={24} /> },
-    {
-      name: "VAPE DEVICES",
-      icon: <FaBath size={24} />,
-      hasSubmenu: true,
-      submenu: [
-        { name: "Pod Systems" },
-        { name: "Box Mods" },
-        { name: "Disposable Vapes" },
-        { name: "Starter Kits" },
-      ],
-    },
-    {
-      name: "E-LIQUIDS",
-      icon: <PiHighlighterCircleBold size={24} />,
-      hasSubmenu: true,
-      submenu: [
-        { name: "Fruity Flavors" },
-        { name: "Dessert Flavors" },
-        { name: "Menthol Flavors" },
-        { name: "Tobacco Flavors" },
-      ],
-    },
-    { name: "ACCESSORIES", icon: <MdFace4 size={24} /> },
+    { name: "CRAZY DEALS", icon: <RiDiscountPercentFill size={24} />, link: "/#crazydeals" },
+    { name: "SHOP ALL", icon: <LuStore size={24} />, link: "/shop" },
+    { name: "BESTSELLERS", icon: <GrLike size={24} />, link: "/#bestsellers" },
+    { name: "SPECIAL COMBOS", icon: <GiPerfumeBottle size={24} />, link: "/#specialcombos" },
+    { name: "FEATURED PRODUCTS", icon: <MdFeaturedPlayList size={24} />, link: "/#featuredproducts" }, // new item
+    { name: "NEW ARRIVALS", icon: <BiNews size={24} />, link: "/#newarrivals" },
   ];
 
   return (
@@ -82,7 +61,7 @@ const Navbar = () => {
             {navItems.map((item) => (
               <Link
                 key={item.name}
-                href="#"
+                href={item.link}
                 className="text-sm font-medium text-gray-700 hover:text-gray-900 group transition duration-300"
               >
                 {item.name}

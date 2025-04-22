@@ -9,7 +9,7 @@ type SpecialComboDataType = {
 };
 const SpecialCombos = ({ comboData }: { comboData: SpecialComboDataType }) => {
   return (
-    <div className="container pb-[1rem] mx-auto px-4 mb-[20px]">
+    <div id="specialcombos" className="container pb-[1rem] mx-auto px-4 mb-[20px]">
       <div className="heading my-[10px] ownContainer text-center uppercase sm:my-[40px]">
         SPECIAL COMBOS
       </div>

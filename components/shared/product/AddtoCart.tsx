@@ -13,7 +13,8 @@ import { handleError } from "@/lib/utils";
 
 const AddtoCartButton = ({ product, size }: { product: any; size: number }) => {
   const frontendSize = useSearchParams().get("size");
-  console.log(frontendSize);
+  const productSize = frontendSize ?? size.toString();
+  console.log(productSize);
   useEffect(() => {
     useCartStore.persist.rehydrate();
   }, []);
@@ -23,17 +24,11 @@ const AddtoCartButton = ({ product, size }: { product: any; size: number }) => {
     store: useStore(),
   });
   const addtoCartHandler = async () => {
-    if (frontendSize === null) {
-      toast.error("Please select the size!", {
-        style: { backgroundColor: "#FBE0E2" },
-      });
-      return;
-    }
     try {
       const data = await getProductDetailsById(
         product._id,
         product.style,
-        frontendSize
+        productSize
       ).catch((err) => alert(err));
       if (qty > data.quantity) {
         toast.error("The quantity you have chosen is more than in stock!");
@@ -44,7 +39,7 @@ const AddtoCartButton = ({ product, size }: { product: any; size: number }) => {
 
         return;
       } else {
-        let _uid = `${data._id}_${product.style}_${frontendSize}`;
+        let _uid = `${data._id}_${product.style}_${productSize}`;
         let exist: any = cart.find((p: any) => p._uid === _uid);
         if (exist) {
           let newCart = cart.map((p: any) => {
@@ -96,7 +91,7 @@ const AddtoCartButton = ({ product, size }: { product: any; size: number }) => {
     <div>
       <Button
         onClick={() => addtoCartHandler()}
-        disabled={product.quantity < 1 || qty === 0 || size === null}
+        disabled={product.quantity < 1 || qty === 0}
         style={{ cursor: `${product.quantity < 1 ? "not-allowed" : ""}` }}
         className="w-full bg-black text-white hover:bg-gray-800 py-[30px]"
       >

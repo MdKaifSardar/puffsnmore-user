@@ -21,6 +21,6 @@ export const getAllCategories = unstable_cache(
   },
   ["all_categories"],
   {
-    revalidate: 1800,
+    revalidate: 120,
   }
 );
