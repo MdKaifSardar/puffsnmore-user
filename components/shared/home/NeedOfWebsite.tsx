@@ -1,5 +1,8 @@
+"use client"
 import React from "react";
+import { motion } from "framer-motion";
 import { Rabbit, Droplet, Wallet, Users } from "lucide-react";
+
 const NeedOfWebsite = () => {
   const features = [
     {
@@ -28,11 +31,18 @@ const NeedOfWebsite = () => {
       <h2 className="heading text-center mb-[40px] text-black">WHY PUFFSNMORE</h2>
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
         {features.map((feature, index) => (
-          <div key={index} className="flex flex-col items-center text-center text-black">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: -50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+            viewport={{ once: false }}
+            className="flex flex-col items-center text-center text-black"
+          >
             <img
               src={`/images/features/${index + 1}.png`}
               alt="_"
-              className="w-[2rem] h-[2rem] sm:w-[50px] sm:h-[50px] mb-[20px]" // modified for mobile devices to be 1rem
+              className="w-[2rem] h-[2rem] sm:w-[50px] sm:h-[50px] mb-[20px]"
             />
             <h3 className="text-sm sm:text-lg mb-1 sm:mb-2 textGap">
               {feature.title}
@@ -40,7 +50,7 @@ const NeedOfWebsite = () => {
             <p className="text-xs sm:text-sm textGap">
               {feature.description}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

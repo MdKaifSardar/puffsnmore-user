@@ -35,14 +35,14 @@ const MobileHamBurgerMenu = ({
       >
         <div className="flex items-center space-x-4 mb-2">
           <User size={40} className=" border-2 border-black p-1 rounded-full" />
-          <div>
+          {/* <div>
             <p className="text-sm font-medium">Download our app</p>
             <p className="text-sm text-muted-foreground">and get 10% OFF!</p>
-          </div>
+          </div> */}
         </div>
-        <Button className="w-full mb-2 bg-red-500 hover:bg-red-600 text-white rounded-none">
+        {/* <Button className="w-full mb-2 bg-red-500 hover:bg-red-600 text-white rounded-none">
           Download App
-        </Button>
+        </Button> */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <Button
             variant="outline"

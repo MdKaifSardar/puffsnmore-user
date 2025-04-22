@@ -7,27 +7,27 @@ import { CiInstagram } from "react-icons/ci";
 const reviews = [
   {
     id: 1,
-    name: "Milinda Thakur",
-    instagram: "milli_thanur_123",
+    name: "Alex Johnson",
+    instagram: "alex_vapes",
     image: "https://placehold.co/200x200",
     rating: 5,
-    text: "VIBECART has set a new standard in the fragrance market, offering exceptional quality at remarkably affordable prices.",
+    text: "This vape delivers a smooth hit with rich, authentic flavors. Absolutely satisfying for any vaping enthusiast."
   },
   {
     id: 2,
-    name: "Shubhman Ravi",
-    instagram: "shubhman_92_ravi",
+    name: "Maria Gonzalez",
+    instagram: "maria_vapeslife",
     image: "https://placehold.co/200x200",
-    rating: 5,
-    text: "Amazed by the lasting power of these scents. VIBECART provides high-end fragrances at unmatched prices.",
+    rating: 4,
+    text: "I've tried several vapes, but this one stands out for its consistency and flavor variety. Highly recommended!"
   },
   {
     id: 3,
-    name: "Raghav varma",
-    instagram: "raghav.varma_89",
+    name: "Jason Lee",
+    instagram: "jvape_lee",
     image: "https://placehold.co/200x200",
     rating: 5,
-    text: "Discovered my signature fragrance with VIBECART. The meticulous craftsmanship in their perfumes is truly impressive.",
+    text: "Exceptional battery life, vapor production, and taste. A truly premium vaping experience."
   },
 ];
 const ReviewSection = () => {
